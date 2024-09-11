@@ -1,7 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { FiChevronDown } from "react-icons/fi";
-import { AiOutlineMobile } from "react-icons/ai";
+import React, { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Label } from "../ui/label";
 import {
@@ -21,8 +19,17 @@ const PhoneNumberInput: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [countryCode, setCountryCode] = useState("+91"); // Default country code for India
   const [countries, setCountries] = useState<any[]>([]); // State for storing country data
+  const [isLoading, setIsLoading] = useState(true); // Loading state
   const [otpRequested, setOtpRequested] = useState(false);
   const [otp, setOtp] = useState(["", "", "", ""]);
+
+  const [errors, setErrors] = useState({
+    phoneNumber: "",
+    otp: "",
+  });
+
+  // Refs for OTP input fields
+  const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Fetch country data when the component mounts
   useEffect(() => {
@@ -44,6 +51,8 @@ const PhoneNumberInput: React.FC = () => {
         ); // Set default to India
       } catch (error) {
         console.error("Error fetching country data:", error);
+      } finally {
+        setIsLoading(false); // Set loading state to false when data is fetched
       }
     };
 
@@ -51,20 +60,75 @@ const PhoneNumberInput: React.FC = () => {
   }, []);
 
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhoneNumber(e.target.value);
+    const value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    setPhoneNumber(value);
+    setErrors({ ...errors, phoneNumber: "" });
   };
 
   const handleOtpChange = (value: string, index: number) => {
     const newOtp = [...otp];
-    newOtp[index] = value;
+    newOtp[index] = value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
     setOtp(newOtp);
+    setErrors({ ...errors, otp: "" });
+
+    // Automatically focus next input field if current field is filled
+    if (value && index < otp.length - 1) {
+      otpRefs.current[index + 1]?.focus();
+    }
+  };
+
+  // Handle focus on previous input field
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      otpRefs.current[index - 1]?.focus();
+    }
+  };
+
+  // Phone number validation
+  const validatePhoneNumber = () => {
+    const phoneRegex = /^[0-9]+$/;
+    if (!phoneNumber) {
+      return "Phone number is required.";
+    }
+    if (!phoneRegex.test(phoneNumber)) {
+      return "Phone number must contain only digits.";
+    }
+    if (phoneNumber.length < 10 || phoneNumber.length > 15) {
+      return "Phone number should be between 10 to 15 digits.";
+    }
+    return "";
+  };
+
+  // OTP validation
+  const validateOtp = () => {
+    const otpRegex = /^[0-9]+$/;
+    const otpCode = otp.join("");
+    if (!otpCode || otpCode.length !== 4) {
+      return "OTP must be 4 digits.";
+    }
+    if (!otpRegex.test(otpCode)) {
+      return "OTP must contain only digits.";
+    }
+    return "";
   };
 
   const handleSubmit = () => {
+    const phoneError = validatePhoneNumber();
+    setErrors({ ...errors, phoneNumber: phoneError });
+
     if (!otpRequested) {
+      if (phoneError) return; // Prevent submitting if there's an error
       // Request OTP logic
       setOtpRequested(true);
     } else {
+      const otpError = validateOtp();
+      setErrors({ ...errors, otp: otpError });
+
+      if (phoneError || otpError) return; // Prevent submitting if there are errors
+
       // Submit OTP logic
       const otpCode = otp.join(""); // Combine OTP digits into one string
       console.log("Submitting OTP:", otpCode);
@@ -72,15 +136,19 @@ const PhoneNumberInput: React.FC = () => {
   };
 
   return (
-    <Card className="max-w-sm mx-auto mt-10 p-6 shadow-lg">
+    <Card className="max-w-lg mx-auto mt-10 p-10  bg-[#faf9ff]">
       <CardHeader>
-        <CardTitle>Login with Phone Number</CardTitle>
+        <h1 className="lg:text-[22px] underline font-semibold">
+          Enter your mobile number
+        </h1>
       </CardHeader>
       <CardContent>
         {/* Phone Number Input with Country Code */}
-        <div className="mb-4">
-          <Label>Phone Number</Label>
-          <div className="flex items-center mt-2 ">
+        <div className="mb-6 ">
+          <Label>
+            Please confirm your country code and enter the mobile number
+          </Label>
+          <div className="flex items-center mt-6 ">
             {/* Country Code Selector */}
             <div className="flex items-center border border-gray-300 rounded-md">
               {countries.length > 0 && (
@@ -89,36 +157,36 @@ const PhoneNumberInput: React.FC = () => {
                   defaultValue={countryCode}
                 >
                   <SelectTrigger
-                    className="flex items-center pl-2 pr-1 h-full w-24 appearance-none"
+                    className="flex items-center  appearance-none"
                     style={{
                       WebkitAppearance: "none",
                       MozAppearance: "none",
                       border: "none",
                     }} // Cross-browser support
                   >
-                    <span className="mr-2 flex items-center">
+                    <span className=" flex items-center">
                       <img
                         src={
                           countries.find((c) => c.code === countryCode)?.flag
                         }
                         alt="Country flag"
-                        className="w-6 h-4"
+                        className="w-4 "
                       />
                     </span>
                     <SelectValue>{countryCode}</SelectValue>
-                    <FiChevronDown className="ml-1" />
                   </SelectTrigger>
-                  <SelectContent className="flex flex-col">
+                  <SelectContent className="flex  ">
                     {countries.map((country) => (
                       <SelectItem
-                        key={country.code}
+                        key={`${country.code}-${country.name}`} // Ensure unique key by combining code and name
                         value={country.code}
-                        className="flex items-center p-2"
+                        className="flex items-center "
                       >
                         <img
                           src={country.flag}
                           alt={country.name}
                           className="w-6 h-4 mr-2"
+                          loading="lazy"
                         />
                         <span>
                           {country.name} ({country.code})
@@ -131,22 +199,25 @@ const PhoneNumberInput: React.FC = () => {
             </div>
 
             {/* Phone Number Input */}
-            <div className="relative flex-grow">
-              <AiOutlineMobile className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <div className="relative flex-grow ">
               <Input
                 type="text"
                 placeholder="Enter phone number"
                 value={phoneNumber}
                 onChange={handlePhoneNumberChange}
-                className="pl-10 w-full"
+                className=" w-full"
               />
             </div>
           </div>
+          {/* Phone Number Error */}
+          {errors.phoneNumber && (
+            <p className="text-red-600 text-sm mt-2">{errors.phoneNumber}</p>
+          )}
         </div>
 
         {/* OTP Input Field */}
         {otpRequested && (
-          <div className="mb-4">
+          <div className="mb-6">
             <Label>Enter OTP</Label>
             <div className="flex space-x-2 mt-2">
               {otp.map((digit, index) => (
@@ -156,15 +227,25 @@ const PhoneNumberInput: React.FC = () => {
                   value={digit}
                   maxLength={1}
                   onChange={(e) => handleOtpChange(e.target.value, index)}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
+                  ref={(el) => (otpRefs.current[index] = el)}
                   className="text-center w-12"
                 />
               ))}
             </div>
+            {/* OTP Error */}
+            {errors.otp && (
+              <p className="text-red-600 text-sm mt-2">{errors.otp}</p>
+            )}
           </div>
         )}
 
         {/* Button */}
-        <Button onClick={handleSubmit} className="w-full mt-4">
+        <Button
+          onClick={handleSubmit}
+          className="w-full mt-4"
+          style={{ backgroundColor: "#6e4a99" }}
+        >
           {otpRequested ? "Submit" : "Request For OTP"}
         </Button>
       </CardContent>

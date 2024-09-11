@@ -1,8 +1,10 @@
 import Image from "next/image";
 import school_girl from "../../assets/school_girl.png";
 import Login_Ui from "@/components/widgets/Login_Ui";
+import Register_Ui from "@/components/widgets/Register_Ui";
+import Cart from "@/components/widgets/Cart";
 
-export default function Login() {
+export default function Purchase() {
   return (
     <div className="flex h-screen">
       {/* Left Side */}
@@ -12,7 +14,6 @@ export default function Login() {
             <Image
               src={school_girl}
               alt=" "
-            
               className="absolute  bottom-0 right-0 lg:w-[360px] sm:w-[300px] "
             />
             <div className="pr-56">
@@ -67,7 +68,7 @@ export default function Login() {
       {/* Right Side */}
       <div className="w-1/2 flex justify-center items-center">
         {/* Content for the right side */}
-        <Login_Ui />
+     <Cart/>
       </div>
     </div>
   );
