@@ -11,15 +11,15 @@ const Cart = () => {
     <Card className="w-[400px] mx-auto mt-10 p-4 bg-[#faf9ff]">
       <Card>
         <div className="p-4">
-          <div className="header flex  gap-4">
+          <div className="header flex  gap-4 justify-around">
             <Image
               src={course1_image}
               alt="course1"
-              className="w-32 h-32 rounded-lg"
+              className="w-24 rounded-lg"
             />
             <div>
               <h1 className="text-[22px] font-bold">Girlhood: HerNext</h1>
-              <p>A Multi-Session Wellness Program for Adolescent Girls</p>
+              <p className='text-sm mt-2'>A Multi-Session Wellness Program for Adolescent Girls</p>
             </div>
           </div>
           <div className="flex mt-4 justify-between">
@@ -34,18 +34,20 @@ const Cart = () => {
             Based on the grade you are eligible for the Girlhood: HerNext course
           </p>
           <Separator className="mt-6 mb-4 bg-gray-400" />
-          <div className="flex  ">
-            <p className="mr-20">Program Price:</p>
+         <div>
+         <div className="flex  justify-between ">
+            <p className="">Program Price:</p>
             <p>
-              <strong>₹ 999/-</strong>
+              <strong className='line-through text-gray-500'>₹ 999/-</strong>
             </p>
           </div>
-          <div className="flex  mt-4">
-            <p className="mr-20">Program Price:</p>
+          <div className="flex  mt-4 justify-between">
+            <p className="">Empowered Price:</p>
             <p>
               <strong>₹ 499/-</strong>
             </p>
           </div>
+         </div>
         </div>
       </Card>
       <Button
@@ -53,8 +55,9 @@ const Cart = () => {
         className="w-full mt-6"
         style={{ backgroundColor: "#6e4a99" }}
       >
-        Submit
+        Proceed to Pay | Rs 499/-
       </Button>
+      <p className='text-sm text-center mt-4'>We do not share your data with 3rd party</p>
     </Card>
   );
 }

@@ -138,16 +138,15 @@ const PhoneNumberInput: React.FC = () => {
   return (
     <Card className="max-w-lg mx-auto mt-10 p-10  bg-[#faf9ff]">
       <CardHeader>
-        <h1 className="lg:text-[22px] underline font-semibold">
+        <h1 className="lg:text-[22px] underline font-semibold mb-4">
           Enter your mobile number
         </h1>
+        <p className=" text-[18px]">  Please confirm your country code and enter the mobile number</p>
       </CardHeader>
       <CardContent>
         {/* Phone Number Input with Country Code */}
         <div className="mb-6 ">
-          <Label>
-            Please confirm your country code and enter the mobile number
-          </Label>
+       
           <div className="flex items-center mt-6 ">
             {/* Country Code Selector */}
             <div className="flex items-center border border-gray-300 rounded-md">

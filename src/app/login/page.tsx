@@ -1,14 +1,19 @@
 import Image from "next/image";
 import school_girl from "../../assets/school_girl.png";
 import Login_Ui from "@/components/widgets/Login_Ui";
+import logo from "../../assets/favicon.png";
 
 export default function Login() {
   return (
-    <div className="flex h-screen">
+    <div className="md:flex md:h-screen w-full ">
       {/* Left Side */}
-      <div className="w-1/2 bg-gradient-to-tr from-[#f0c8d8] to-white">
+      
+      <div className="md:w-1/2 bg-gradient-to-tr from-[#f0c8d8] to-white ">
+      <Image src={logo} alt="logo" width={100} height={100}  className=" ml-16 mt-10"/>
         <div className="">
-          <div className=" border-[2px] border-[#bea7d6] bg-white md:w-[85%] md:p-10 p-4 rounded-lg items-center relative mx-auto mt-8 md:mt-20  h-[450px]    ">
+    
+          <div className=" border-[2px] border-[#bea7d6] bg-white md:w-[85%] md:p-10 p-4 rounded-lg items-center relative mx-auto mt-8 md:mt-8  h-[450px]    ">
+         
             <Image
               src={school_girl}
               alt=" "
@@ -56,16 +61,13 @@ export default function Login() {
                 </div>
               </div>
             </div>
-            <p className="text-sm text-center mt-10">
-              * If you register for the 21-day program, your consultation
-              charges will be refunded
-            </p>
+            
           </div>
         </div>
       </div>
 
       {/* Right Side */}
-      <div className="w-1/2 flex justify-center items-center">
+      <div className="md:w-1/2 flex justify-center items-center">
         {/* Content for the right side */}
         <Login_Ui />
       </div>

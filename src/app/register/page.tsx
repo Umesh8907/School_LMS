@@ -2,17 +2,23 @@ import Image from "next/image";
 import school_girl from "../../assets/school_girl.png";
 import Login_Ui from "@/components/widgets/Login_Ui";
 import Register_Ui from "@/components/widgets/Register_Ui";
-
-export default function Register() {
+import Cart from "@/components/widgets/Cart";
+import logo from "../../assets/favicon.png";
+export default function Purchase() {
   return (
-    <div className="flex h-screen">
+    <div className="md:flex md:h-screen w-full ">
       {/* Left Side */}
-      <div className="w-1/2 bg-gradient-to-tr from-[#f0c8d8] to-white">
+      
+      <div className="md:w-1/2 bg-gradient-to-tr from-[#f0c8d8] to-white ">
+      <Image src={logo} alt="logo" width={100} height={100}  className=" ml-16 mt-10"/>
         <div className="">
-          <div className=" border-[2px] border-[#bea7d6] bg-white md:w-[85%] md:p-10 p-4 rounded-lg items-center relative mx-auto mt-8 md:mt-20  h-[450px]    ">
+    
+          <div className=" border-[2px] border-[#bea7d6] bg-white md:w-[85%] md:p-10 p-4 rounded-lg items-center relative mx-auto mt-8 md:mt-8  h-[450px]    ">
+         
             <Image
               src={school_girl}
               alt=" "
+            
               className="absolute  bottom-0 right-0 lg:w-[360px] sm:w-[300px] "
             />
             <div className="pr-56">
@@ -56,16 +62,14 @@ export default function Register() {
                 </div>
               </div>
             </div>
-            <p className="text-sm text-center mt-10">
-              * If you register for the 21-day program, your consultation
-              charges will be refunded
-            </p>
+            
           </div>
         </div>
       </div>
 
       {/* Right Side */}
-      <div className="w-1/2 flex justify-center items-center">
+      <div className="md:w-1/2 flex justify-center items-center">
+        {/* Content for the right side */}
         {/* Content for the right side */}
         <Register_Ui/>
       </div>
