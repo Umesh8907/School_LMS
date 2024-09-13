@@ -8,12 +8,21 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    container: {
+      padding: {
+        DEFAULT: "1rem",
+        sm: "3rem",
+        lg: "4rem",
+        xl: "5rem",
+        "2xl": "6rem",
+      },
+    },
     extend: {
       screens: {
-		sm:"800px",
-		md:"1400px",
+        sm: "800px",
+        md: "1400px",
         lg: "1600px",
-		xl:"1800px" // Custom breakpoint for screens ≥ 1600px
+        xl: "1800px", // Custom breakpoint for screens ≥ 1600px
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
