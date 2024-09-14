@@ -64,4 +64,38 @@
     @apply bg-background text-foreground;
   }
 }
+.custom-scrollbar {
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #b955aa #faf9ff; /* Thumb and track colors */
+}
 
+/* Webkit-based browsers (Chrome, Safari, etc.) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+  height: 8px; /* Height for horizontal scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #faf9ff; /* Track background */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #b955aa; /* Thumb color */
+  border-radius: 10px; /* Rounded scrollbar thumb */
+  border: 2px solid #faf9ff; /* Adds space around thumb */
+}
+
+.custom-scrollbar::-webkit-scrollbar-corner {
+  background: transparent; /* Hide the corner where both scrollbars meet */
+}
+
+/* Apply the custom scrollbar style globally */
+body {
+  @apply custom-scrollbar;
+}
+
+/* Or if you want to limit it to scrollable containers only: */
+.overflow-y-scroll,
+.overflow-auto {
+  @apply custom-scrollbar;
+}

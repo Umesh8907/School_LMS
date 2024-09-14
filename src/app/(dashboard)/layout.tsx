@@ -1,14 +1,18 @@
-
 import Sidebar from "@/components/widgets/Sidebar";
 import React from "react";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className=" md:flex">
-      <div className="hidden md:block">
+    <div className="flex w-full h-screen">
+      {/* Sidebar */}
+      <div className="md:block  h-full">
         <Sidebar />
       </div>
-      {children}
+
+      {/* Main content */}
+      <div className="w-full ] bg-[#faf9ff] h-full overflow-y-auto">
+        {children}
+      </div>
     </div>
   );
 };
