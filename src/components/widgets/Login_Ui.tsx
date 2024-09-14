@@ -15,10 +15,17 @@ import { Button } from "../ui/button";
 // API endpoint to fetch country data
 const COUNTRIES_API = "https://restcountries.com/v3.1/all";
 
+// Define the Country type
+interface Country {
+  code: string;
+  name: string;
+  flag: string;
+}
+
 const PhoneNumberInput: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [countryCode, setCountryCode] = useState("+91"); // Default country code for India
-  const [countries, setCountries] = useState<any[]>([]); // State for storing country data
+  const [countries, setCountries] = useState<Country[]>([]); // State for storing country data
   const [isLoading, setIsLoading] = useState(true); // Loading state
   const [otpRequested, setOtpRequested] = useState(false);
   const [otp, setOtp] = useState(["", "", "", ""]);
@@ -37,13 +44,13 @@ const PhoneNumberInput: React.FC = () => {
       try {
         const response = await fetch(COUNTRIES_API);
         const data = await response.json();
-        const countryData = data
+        const countryData: Country[] = data
           .map((country: any) => ({
             code: country.idd?.root + (country.idd?.suffixes?.[0] || ""),
             name: country.name.common,
             flag: country.flags?.png, // Flag URL
           }))
-          .filter((country: any) => country.code); // Filter out countries without calling codes
+          .filter((country: Country) => country.code); // Filter out countries without calling codes
 
         setCountries(countryData);
         setCountryCode(
@@ -136,18 +143,19 @@ const PhoneNumberInput: React.FC = () => {
   };
 
   return (
-    <Card className="max-w-lg mx-auto mt-10 p-10  bg-[#faf9ff]">
+    <Card className="max-w-lg mx-auto mt-10 p-10 bg-[#faf9ff]">
       <CardHeader>
         <h1 className="lg:text-[22px] underline font-semibold mb-4">
           Enter your mobile number
         </h1>
-        <p className=" text-[18px]">  Please confirm your country code and enter the mobile number</p>
+        <p className="text-[18px]">
+          Please confirm your country code and enter the mobile number
+        </p>
       </CardHeader>
       <CardContent>
         {/* Phone Number Input with Country Code */}
-        <div className="mb-6 ">
-       
-          <div className="flex items-center mt-6 ">
+        <div className="mb-6">
+          <div className="flex items-center mt-6">
             {/* Country Code Selector */}
             <div className="flex items-center border border-gray-300 rounded-md">
               {countries.length > 0 && (
@@ -156,30 +164,30 @@ const PhoneNumberInput: React.FC = () => {
                   defaultValue={countryCode}
                 >
                   <SelectTrigger
-                    className="flex items-center  appearance-none"
+                    className="flex items-center appearance-none"
                     style={{
                       WebkitAppearance: "none",
                       MozAppearance: "none",
                       border: "none",
                     }} // Cross-browser support
                   >
-                    <span className=" flex items-center">
+                    <span className="flex items-center">
                       <img
                         src={
                           countries.find((c) => c.code === countryCode)?.flag
                         }
                         alt="Country flag"
-                        className="w-4 "
+                        className="w-4"
                       />
                     </span>
                     <SelectValue>{countryCode}</SelectValue>
                   </SelectTrigger>
-                  <SelectContent className="flex  ">
+                  <SelectContent className="flex">
                     {countries.map((country) => (
                       <SelectItem
                         key={`${country.code}-${country.name}`} // Ensure unique key by combining code and name
                         value={country.code}
-                        className="flex items-center "
+                        className="flex items-center"
                       >
                         <img
                           src={country.flag}
@@ -198,13 +206,13 @@ const PhoneNumberInput: React.FC = () => {
             </div>
 
             {/* Phone Number Input */}
-            <div className="relative flex-grow ">
+            <div className="relative flex-grow">
               <Input
                 type="text"
                 placeholder="Enter phone number"
                 value={phoneNumber}
                 onChange={handlePhoneNumberChange}
-                className=" w-full"
+                className="w-full"
               />
             </div>
           </div>
