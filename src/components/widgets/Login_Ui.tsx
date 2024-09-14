@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardContent, CardHeader } from "../ui/card";
 import { Label } from "../ui/label";
 import {
   Select,
@@ -20,6 +20,20 @@ interface Country {
   code: string;
   name: string;
   flag: string;
+}
+
+// Define the API response type
+interface ApiCountry {
+  idd: {
+    root: string;
+    suffixes?: string[];
+  };
+  name: {
+    common: string;
+  };
+  flags: {
+    png: string;
+  };
 }
 
 const PhoneNumberInput: React.FC = () => {
@@ -43,14 +57,14 @@ const PhoneNumberInput: React.FC = () => {
     const fetchCountries = async () => {
       try {
         const response = await fetch(COUNTRIES_API);
-        const data = await response.json();
+        const data: ApiCountry[] = await response.json();
         const countryData: Country[] = data
-          .map((country: any) => ({
+          .map((country) => ({
             code: country.idd?.root + (country.idd?.suffixes?.[0] || ""),
             name: country.name.common,
-            flag: country.flags?.png, // Flag URL
+            flag: country.flags?.png || "", // Provide default value
           }))
-          .filter((country: Country) => country.code); // Filter out countries without calling codes
+          .filter((country): country is Country => !!country.code); // Type guard
 
         setCountries(countryData);
         setCountryCode(
@@ -69,14 +83,14 @@ const PhoneNumberInput: React.FC = () => {
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
     setPhoneNumber(value);
-    setErrors({ ...errors, phoneNumber: "" });
+    setErrors((prevErrors) => ({ ...prevErrors, phoneNumber: "" }));
   };
 
   const handleOtpChange = (value: string, index: number) => {
     const newOtp = [...otp];
     newOtp[index] = value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
     setOtp(newOtp);
-    setErrors({ ...errors, otp: "" });
+    setErrors((prevErrors) => ({ ...prevErrors, otp: "" }));
 
     // Automatically focus next input field if current field is filled
     if (value && index < otp.length - 1) {
@@ -124,7 +138,7 @@ const PhoneNumberInput: React.FC = () => {
 
   const handleSubmit = () => {
     const phoneError = validatePhoneNumber();
-    setErrors({ ...errors, phoneNumber: phoneError });
+    setErrors((prevErrors) => ({ ...prevErrors, phoneNumber: phoneError }));
 
     if (!otpRequested) {
       if (phoneError) return; // Prevent submitting if there's an error
@@ -132,7 +146,7 @@ const PhoneNumberInput: React.FC = () => {
       setOtpRequested(true);
     } else {
       const otpError = validateOtp();
-      setErrors({ ...errors, otp: otpError });
+      setErrors((prevErrors) => ({ ...prevErrors, otp: otpError }));
 
       if (phoneError || otpError) return; // Prevent submitting if there are errors
 
@@ -235,7 +249,7 @@ const PhoneNumberInput: React.FC = () => {
                   maxLength={1}
                   onChange={(e) => handleOtpChange(e.target.value, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
-                  ref={(el) => (otpRefs.current[index] = el)}
+                  ref={(el) => (otpRefs.current[index] = el || null)} // Corrected ref callback
                   className="text-center w-12"
                 />
               ))}
