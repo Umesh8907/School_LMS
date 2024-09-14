@@ -13,7 +13,7 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(undefined);
   const [month, setMonth] = React.useState<Date>(new Date());
   const currentYear = new Date().getFullYear();
   const yearsRange = Array.from({ length: 100 }, (_, i) => currentYear - i);
@@ -27,7 +27,7 @@ function Calendar({
     <DayPicker
       month={month}
       onMonthChange={setMonth}
-      selected={selectedDate}
+      selected={selectedDate}  // Pass as Date | undefined
       onSelect={setSelectedDate}
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
