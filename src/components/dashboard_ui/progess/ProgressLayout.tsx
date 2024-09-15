@@ -6,7 +6,7 @@ import Course_Module from "./Course_Module";
 
 const ProgressLayout = () => {
   return (
-    <div className="border-[1px] rounded-xl border-gray-300 p-4 md:p-6 w-full md:w-[75%]">
+    <div className="md:border-[1px] rounded-xl border-gray-300 p-0 md:p-6 w-full md:w-[75%]">
       <Course_Progress />
       <div className="flex flex-col md:flex-row md:gap-4 md:mt-4">
         {/* Module Progress */}

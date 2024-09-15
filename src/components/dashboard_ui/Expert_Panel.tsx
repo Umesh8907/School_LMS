@@ -30,8 +30,8 @@ const Experts = [
 
 const Expert_Panel = () => {
   return (
-    <div className=" w-[28%] rounded-xl flex flex-col md:gap-4 ">
-      <h1>
+    <div className=" md:w-[28%] rounded-xl flex flex-col gap-4 md:mt-0 mt-4  ">
+      <h1 className="text-center md:text-left">
         <strong>Experts -</strong> designed the course
       </h1>
 
@@ -53,7 +53,7 @@ const Expert_Panel = () => {
               </div>
             </div>
             <p className="text-sm">{experts.about}</p>
-            <div className="flex justify-end">
+            <div className="flex md:justify-end justify-center">
               <button className=" bg-[#bea7d6] text-[#652ab6] px-4 py-1 rounded-full font-semibold ">
                 Book a Consultation
               </button>

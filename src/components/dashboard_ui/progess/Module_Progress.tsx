@@ -68,30 +68,30 @@ const modules: ModuleType[] = [
 
 const ModuleProgress: React.FC = () => {
   return (
-    <div className="border-2  p-4 flex flex-col gap-4 rounded-xl bg-white">
+    <div className="border-2  md:p-4 p-2 flex flex-col gap-4 rounded-xl bg-white md:mt-0 mt-4">
       {modules.map((mod) => (
         <div
           key={mod.id}
           className="rounded-sm  p-2 flex  items-center justify-between border"
           style={{ backgroundColor: mod.color || "#ffffff" }} // Apply dynamic background color
         >
-         <div className="flex items-center gap-4" >
-          <div className="w-14 h-14  rounded-md flex justify-center items-center"   style={{ backgroundColor: mod.iconColor || "#ffffff" }}>
+         <div className="flex items-center md:gap-4" >
+          <div className="md:w-14 md:h-14  rounded-md flex justify-center items-center"   style={{ backgroundColor: mod.iconColor || "#ffffff" }}>
           {/* first word of the module title */}
-         <p className="text-[32px] font-bold text-center"> {mod.title.charAt(0)}</p>
+         <p className="md:text-[32px] font-bold text-center hidden md:block"> {mod.title.charAt(0)}</p>
           </div>
          <div className="">
              
-             <h3 className=" ">{mod.title}</h3>
-             <p className="text-sm text-gray-600">{`${mod.subtitle} | ${mod.duration}`}</p>
+             <h3 className=" text-[12px] md:text-[16px]">{mod.title}</h3>
+             <p className="text-[10px] md:text-sm text-gray-600">{`${mod.subtitle} | ${mod.duration}`}</p>
          
          </div>
          </div>
           <div
-            className=" px-2 py-1 bg-[#f7d3e1] w-[100px] rounded "
+            className=" px-2 py-1 bg-[#f7d3e1] md:w-[100px] rounded "
             style={{ backgroundColor: mod.statusColour || "#ffffff" }}
           >
-            <p className={`text-sm text-center `}>{mod.status}</p>
+            <p className={`md:text-sm text-center text-[10px] `}>{mod.status}</p>
           </div>
         </div>
       ))}

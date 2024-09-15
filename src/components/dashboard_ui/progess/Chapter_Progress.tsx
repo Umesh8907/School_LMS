@@ -35,7 +35,8 @@ const dummyData = [
   },
 ];
 
-const getStatusColor = (status) => {
+// Utility function to get status color
+const getStatusColor = (status: string): string => {
   switch (status) {
     case "Completed":
       return "text-[#418e64] bg-[#b1dec8]";
@@ -48,27 +49,30 @@ const getStatusColor = (status) => {
   }
 };
 
-const Chapter_Progress = () => {
+const Chapter_Progress: React.FC = () => {
   const [progress, setProgress] = useState(50);
+
   return (
-    <div className="border rounded">
-      <div className="bg-[#f7f0f3] px-6 py-2 h-16">
-        <div className="flex justify-between h-full">
+    <div className="border rounded text-sm">
+      {/* Header */}
+      <div className="bg-[#f7f0f3] px-4 py-2 sm:px-6 sm:py-2 h-14">
+        <div className="flex justify-between items-center h-full">
           <div className="flex flex-col">
-            <h2 className="text-xl font-semibold">Current Module</h2>
-            <p className="text-sm">Duration : 2 Hours</p>
+            <h2 className="text-lg sm:text-xl font-semibold">Current Module</h2>
+            <p className="text-xs sm:text-sm">Duration: 2 Hours</p>
           </div>
-          <div className="flex flex-col justify-center items-center gap-2 ">
+          <div className="flex flex-col justify-center items-center gap-2">
             <Progress
               value={progress}
-              className="w-[160px]  h-[15px] bg-white rounded-lg "
+              className="w-[160px] h-[15px] bg-white rounded-lg"
             />
-            <p className="text-sm">{`${progress} % Completed`}</p>
+            <p className="text-xs sm:text-sm">{`${progress}% Completed`}</p>
           </div>
         </div>
       </div>
-      {/* Heading */}
-      <div className="grid grid-cols-[50px_2fr_1fr_1fr] gap-4 font-semibold p-4 border-b">
+
+      {/* Heading for both mobile and desktop */}
+      <div className="grid grid-cols-[40px_2fr_1fr_1fr] gap-2 font-semibold p-3 border-b text-xs sm:text-sm">
         <div className="text-center">S.No</div>
         <div>Chapter Name</div>
         <div>Duration</div>
@@ -80,11 +84,18 @@ const Chapter_Progress = () => {
         {dummyData.map((data, index) => (
           <div
             key={index}
-            className="grid grid-cols-[50px_2fr_1fr_1fr] gap-4 items-center py-2 px-4 border-b"
+            className="grid grid-cols-[40px_2fr_1fr_1fr] sm:grid-cols-[40px_2fr_1fr_1fr] gap-2 items-center py-2 px-3 border-b text-xs sm:text-sm"
           >
+            {/* S.No */}
             <div className="text-center">{index + 1}</div>
+
+            {/* Chapter Name */}
             <div>{data.name}</div>
+
+            {/* Duration */}
             <div>{data.duration}</div>
+
+            {/* Status with color based on condition */}
             <div
               className={`text-left px-2 py-1 rounded-sm ${getStatusColor(
                 data.status

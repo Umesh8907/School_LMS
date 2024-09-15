@@ -11,18 +11,18 @@ const Course_Progress = () => {
 
   return (
     <div className="bg-[#f4f2ff]  p-4 shadow-md rounded-xl border">
-      <div className="flex gap-4 items-center justify-between">
-        <div className="flex gap-4">
+      <div className="md:flex gap-4 items-center justify-between">
+        <div className="md:flex gap-4">
           <Image
             src={course1_image}
             alt={"girl"}
-            className="w-28 rounded-xl object-cover "
+            className="md:w-28 rounded-xl object-cover "
           />
-           <div className="w-[60%] ml-2">
-          <p>
+           <div className="md:w-[60%] md:ml-2 md:mt-0 mt-4">
+          <p className="text-sm md:text-[16px]">
            <strong>Girlhood: HerNext</strong> | Duration: 10 hours, 30 minutes
           </p>
-          <p className="mt-4 text-gray-500">
+          <p className="mt-4 text-gray-500 text-[12px] md:text-left text-cente md:text-[16px]">
             Comprehensive guide on menstrual health, nutrition, and safety for
             girls
           </p>
@@ -33,9 +33,9 @@ const Course_Progress = () => {
          <div className="flex flex-col justify-center items-center gap-2 ">
          <Progress
             value={progress}
-            className="w-[180px]  h-4 bg-white rounded-lg shadow-lg"
+            className="w-[180px]  h-4 bg-white rounded-lg shadow-lg md:mt-0 mt-4"
           />
-          <p>{`${progress} % Completed`}</p>
+          <p className="text-sm font-semibold md:text-[16px]">{`${progress} % Completed`}</p>
          </div>
      
       </div>
