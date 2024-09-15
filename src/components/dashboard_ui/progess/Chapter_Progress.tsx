@@ -1,44 +1,100 @@
-import React from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../../ui/table";
+'use client'
+import React, { useState } from "react";
+import { Progress } from "../../ui/progress";
 
 const dummyData = [
-  { id: 1, name: 'The Menstrual Cycle', duration: '30 minutes', status: 'Completed' },
-  { id: 2, name: 'Understanding PMS', duration: '45 minutes', status: 'In Progress' },
-  { id: 3, name: 'Managing Menstrual Pain', duration: '20 minutes', status: 'Not Started' },
-  { id: 4, name: 'Healthy Practices', duration: '35 minutes', status: 'Completed' },
-  { id: 5, name: 'Menstrual Health Myths', duration: '40 minutes', status: 'Completed' },
+  {
+    id: 1,
+    name: "The Menstrual Cycle",
+    duration: "30 minutes",
+    status: "Completed",
+  },
+  {
+    id: 2,
+    name: "Understanding PMS",
+    duration: "45 minutes",
+    status: "In Progress",
+  },
+  {
+    id: 3,
+    name: "Managing Menstrual Pain",
+    duration: "20 minutes",
+    status: "Not Started",
+  },
+  {
+    id: 4,
+    name: "Healthy Practices",
+    duration: "35 minutes",
+    status: "Completed",
+  },
+  {
+    id: 5,
+    name: "Menstrual Health Myths",
+    duration: "40 minutes",
+    status: "Completed",
+  },
 ];
 
+const getStatusColor = (status) => {
+  switch (status) {
+    case "Completed":
+      return "text-[#418e64] bg-[#b1dec8]";
+    case "In Progress":
+      return "text-[#3066c9] bg-[#b7d0f9]";
+    case "Not Started":
+      return "text-[#d84779] bg-[#f7d3e1]";
+    default:
+      return "";
+  }
+};
+
 const Chapter_Progress = () => {
+  const [progress, setProgress] = useState(50);
   return (
-    <div className=' max-w-4xl mx-auto p-4'>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>S.No</TableHead>
-            <TableHead>Chapter Name</TableHead>
-            <TableHead>Duration</TableHead>
-            <TableHead className="text-right">Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {dummyData.map((chapter, index) => (
-            <TableRow key={chapter.id}>
-              <TableCell className="font-medium">{index + 1}</TableCell>
-              <TableCell>{chapter.name}</TableCell>
-              <TableCell>{chapter.duration}</TableCell>
-              <TableCell className="text-right">{chapter.status}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <div className="border rounded">
+      <div className="bg-[#f7f0f3] px-6 py-2 h-16">
+        <div className="flex justify-between h-full">
+          <div className="flex flex-col">
+            <h2 className="text-xl font-semibold">Current Module</h2>
+            <p className="text-sm">Duration : 2 Hours</p>
+          </div>
+          <div className="flex flex-col justify-center items-center gap-2 ">
+            <Progress
+              value={progress}
+              className="w-[160px]  h-[15px] bg-white rounded-lg "
+            />
+            <p className="text-sm">{`${progress} % Completed`}</p>
+          </div>
+        </div>
+      </div>
+      {/* Heading */}
+      <div className="grid grid-cols-[50px_2fr_1fr_1fr] gap-4 font-semibold p-4 border-b">
+        <div className="text-center">S.No</div>
+        <div>Chapter Name</div>
+        <div>Duration</div>
+        <div className="text-left">Status</div>
+      </div>
+
+      {/* Data Rows */}
+      <div>
+        {dummyData.map((data, index) => (
+          <div
+            key={index}
+            className="grid grid-cols-[50px_2fr_1fr_1fr] gap-4 items-center py-2 px-4 border-b"
+          >
+            <div className="text-center">{index + 1}</div>
+            <div>{data.name}</div>
+            <div>{data.duration}</div>
+            <div
+              className={`text-left px-2 py-1 rounded-sm ${getStatusColor(
+                data.status
+              )}`}
+            >
+              {data.status}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

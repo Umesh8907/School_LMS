@@ -34,7 +34,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="h-screen flex flex-col justify-between bg-[#F8EBF5] px-4 md:px-10 w-[80px] md:w-[300px]">
+    <div className="h-screen flex flex-col justify-between bg-[#F8EBF5] px-4 md:px-10 w-[70px] md:w-[260px]">
       <div>
         {/* Logo */}
         <div className="mt-10 flex justify-start">

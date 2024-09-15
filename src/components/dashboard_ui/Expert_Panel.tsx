@@ -30,12 +30,17 @@ const Experts = [
 
 const Expert_Panel = () => {
   return (
-    <div className="border-2 w-[28%] p-6 rounded-xl flex flex-col gap-6 ">
-      <h1 ><strong>Experts -</strong> designed the course</h1>
+    <div className=" w-[28%] rounded-xl flex flex-col md:gap-4 ">
+      <h1>
+        <strong>Experts -</strong> designed the course
+      </h1>
 
       {Experts.map((experts, index) => {
         return (
-          <div key={index} className="bg-[#f4f2ff] p-4 rounded-xl shadow-sm flex flex-col gap-4 border-2">
+          <div
+            key={index}
+            className="bg-[#f4f2ff] p-4 rounded-xl shadow-sm flex flex-col gap-4 border-2"
+          >
             <div className="flex gap-6 items-center">
               <Image
                 src={experts.image_url}
@@ -45,14 +50,14 @@ const Expert_Panel = () => {
               <div>
                 <p className="font-semibold">{experts.name}</p>
                 <p className="text-sm text-gray-700">{experts.designation}</p>
-              
               </div>
-         
             </div>
             <p className="text-sm">{experts.about}</p>
-           <div className="flex justify-end">
-           <button className=" bg-[#bea7d6] text-[#652ab6] px-4 py-1 rounded-full font-semibold ">Book a Consultation</button>
-           </div>
+            <div className="flex justify-end">
+              <button className=" bg-[#bea7d6] text-[#652ab6] px-4 py-1 rounded-full font-semibold ">
+                Book a Consultation
+              </button>
+            </div>
           </div>
         );
       })}

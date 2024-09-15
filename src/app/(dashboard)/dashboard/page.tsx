@@ -8,15 +8,15 @@ import React from "react";
 
 const page = () => {
   return (
-    <div className="container mx-auto  ">
+    <div className="md:w-[96%] mx-auto  ">
       <h1>Dashboard</h1>
 
       <Profile_Card />
-      <div className="flex mt-10 gap-6  ">
+      <div className="md:flex  mt-10 md:gap-6  ">
         <ProgressLayout />
         <Expert_Panel />
       </div>
-      <div className="flex mt-10 gap-6">
+      <div className="md:flex mt-10 md:gap-4">
         <div className="w-1/2"><Chapter_Progress/></div>
         <div className="w-1/2"><Assessment_History/></div>
       </div>

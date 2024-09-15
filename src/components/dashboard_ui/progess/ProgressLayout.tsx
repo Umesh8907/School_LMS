@@ -6,16 +6,16 @@ import Course_Module from "./Course_Module";
 
 const ProgressLayout = () => {
   return (
-    <div className="border-[1px] rounded-xl border-gray-300 p-4 md:p-8 w-full md:w-[75%]">
+    <div className="border-[1px] rounded-xl border-gray-300 p-4 md:p-6 w-full md:w-[75%]">
       <Course_Progress />
-      <div className="flex flex-col md:flex-row gap-6 mt-6">
+      <div className="flex flex-col md:flex-row md:gap-4 md:mt-4">
         {/* Module Progress */}
         <div className="w-full md:w-[70%]">
           <Module_Progress />
         </div>
 
         {/* Assessment Progress and Course Module */}
-        <div className="flex flex-col gap-6 w-full md:w-[30%]">
+        <div className="flex flex-col md:gap-6 w-full md:w-[30%]">
           <div className="w-full h-full">
             <Assesment_Progress />
           </div>

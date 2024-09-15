@@ -76,7 +76,7 @@ const ModuleProgress: React.FC = () => {
           style={{ backgroundColor: mod.color || "#ffffff" }} // Apply dynamic background color
         >
          <div className="flex items-center gap-4" >
-          <div className="w-16 h-16  rounded-md flex justify-center items-center"   style={{ backgroundColor: mod.iconColor || "#ffffff" }}>
+          <div className="w-14 h-14  rounded-md flex justify-center items-center"   style={{ backgroundColor: mod.iconColor || "#ffffff" }}>
           {/* first word of the module title */}
          <p className="text-[32px] font-bold text-center"> {mod.title.charAt(0)}</p>
           </div>

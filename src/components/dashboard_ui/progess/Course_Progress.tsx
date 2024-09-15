@@ -16,13 +16,13 @@ const Course_Progress = () => {
           <Image
             src={course1_image}
             alt={"girl"}
-            className="w-28 rounded-xl "
+            className="w-28 rounded-xl object-cover "
           />
            <div className="w-[60%] ml-2">
           <p>
            <strong>Girlhood: HerNext</strong> | Duration: 10 hours, 30 minutes
           </p>
-          <p>
+          <p className="mt-4 text-gray-500">
             Comprehensive guide on menstrual health, nutrition, and safety for
             girls
           </p>
