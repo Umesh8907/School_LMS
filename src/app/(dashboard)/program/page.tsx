@@ -12,7 +12,8 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Tabs } from "@/components/ui/tabs";
-import { TabsDemo } from "@/components/widgets/Tabs";
+import TabsDemo from "@/components/widgets/Tabs";
+
 
 const page = () => {
   return (

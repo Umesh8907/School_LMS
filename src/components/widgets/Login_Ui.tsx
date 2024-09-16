@@ -169,16 +169,16 @@ const PhoneNumberInput: React.FC = () => {
       <CardContent>
         {/* Phone Number Input with Country Code */}
         <div className="mb-6">
-          <div className="flex items-center mt-6">
+          <div className="flex items-center mt-6 gap-2 ">
             {/* Country Code Selector */}
-            <div className="flex items-center border border-gray-300 rounded-md">
+            <div className="flex items-center border border-gray-300 rounded-md ">
               {countries.length > 0 && (
                 <Select
                   onValueChange={(value) => setCountryCode(value)}
                   defaultValue={countryCode}
                 >
                   <SelectTrigger
-                    className="flex items-center appearance-none"
+                    className="flex items-center appearance-none  "
                     style={{
                       WebkitAppearance: "none",
                       MozAppearance: "none",
@@ -226,7 +226,7 @@ const PhoneNumberInput: React.FC = () => {
                 placeholder="Enter phone number"
                 value={phoneNumber}
                 onChange={handlePhoneNumberChange}
-                className="w-full"
+                className="w-[200px] h-[39px]"
               />
             </div>
           </div>
@@ -262,13 +262,13 @@ const PhoneNumberInput: React.FC = () => {
         )}
 
         {/* Button */}
-        <Button
-          onClick={handleSubmit}
-          className="w-full mt-4"
-          style={{ backgroundColor: "#6e4a99" }}
-        >
-          {otpRequested ? "Submit" : "Request For OTP"}
-        </Button>
+      
+        <div className="flex justify-center">
+        <button className="bg-[#6e4a99] text-white font-bold rounded-full px-12 py-2 "  onClick={handleSubmit}>
+        {otpRequested ? "Submit" : "Request For OTP"}
+            </button>
+          </div>
+
       </CardContent>
     </Card>
   );

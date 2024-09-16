@@ -10,14 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { format } from "date-fns";
 
 // Helper function for validation
 const validateProfile = ({
@@ -63,37 +55,38 @@ const validateProfile = ({
   else if (!/^\d{10}$/.test(contact))
     errors.contact = "Contact number must be 10 digits.";
 
-  if (dob && grade) {
-    const dobDate = new Date(dob);
-    const age = new Date().getFullYear() - dobDate.getFullYear();
-    if (age < gradeAgeRanges[grade][0] || age > gradeAgeRanges[grade][1]) {
-      errors.dob = `Date of birth does not match the selected grade. Expected age for grade ${grade} is between ${gradeAgeRanges[grade][0]} and ${gradeAgeRanges[grade][1]}.`;
-    }
-  }
-
   return errors;
 };
 
 const Register_Ui: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [dob, setDob] = useState<Date | undefined>(undefined);
+  const [day, setDay] = useState("");
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
   const [grade, setGrade] = useState("");
   const [school, setSchool] = useState("");
   const [contact, setContact] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
+  // Generate date options
+  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+  const months = [
+    "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+  ];
+  const years = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
+
   const handleSubmit = () => {
+    const dob = `${year}-${month}-${day}`;
     const validationErrors = validateProfile({
       name,
       email,
-      dob: dob ? dob.toISOString().split("T")[0] : "",
+      dob,
       grade,
       school,
       contact,
     });
     if (Object.keys(validationErrors).length === 0) {
-      // Proceed with form submission
       console.log("Form submitted successfully");
     } else {
       setErrors(validationErrors);
@@ -108,6 +101,7 @@ const Register_Ui: React.FC = () => {
         </h1>
         <p className="mt-4 text-[18px]">Complete your profile to get course access</p>
         <div className="mt-4 flex flex-col gap-6">
+          {/* Full Name */}
           <Input
             type="text"
             placeholder="Full Name"
@@ -117,6 +111,7 @@ const Register_Ui: React.FC = () => {
           />
           {errors.name && <p className="text-red-600 text-sm">{errors.name}</p>}
 
+          {/* Email */}
           <Input
             type="text"
             placeholder="Email Address"
@@ -124,53 +119,70 @@ const Register_Ui: React.FC = () => {
             onChange={(e) => setEmail(e.target.value)}
             className="w-full bg-white"
           />
-          {errors.email && (
-            <p className="text-red-600 text-sm">{errors.email}</p>
-          )}
+          {errors.email && <p className="text-red-600 text-sm">{errors.email}</p>}
 
+          {/* Date of Birth */}
           <div className="flex gap-4">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start text-left font-normal"
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {dob ? format(dob, "PPP") : "Pick a date"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={dob}
-                  onSelect={(date) => {
-                    setDob(date);
-                    // Close the popover when a date is selected
-                  }}
-                />
-              </PopoverContent>
-            </Popover>
-
-            <Select
-              onValueChange={(value) => setGrade(value)}
-              defaultValue={grade}
-            >
+            {/* Day */}
+            <Select onValueChange={setDay} defaultValue={day}>
               <SelectTrigger className="w-full bg-white">
-                <SelectValue placeholder="Select Grade" />
+                <SelectValue placeholder="Day" />
               </SelectTrigger>
               <SelectContent>
-                {[...Array(12).keys()].map((i) => (
-                  <SelectItem key={i + 1} value={`${i + 1}`}>
-                    {i + 1}
+                {days.map((d) => (
+                  <SelectItem key={d} value={`${d}`}>
+                    {d}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            {errors.grade && (
-              <p className="text-red-600 text-sm">{errors.grade}</p>
-            )}
+
+            {/* Month */}
+            <Select onValueChange={setMonth} defaultValue={month}>
+              <SelectTrigger className="w-full bg-white">
+                <SelectValue placeholder="Month" />
+              </SelectTrigger>
+              <SelectContent>
+                {months.map((m, index) => (
+                  <SelectItem key={index} value={`${index + 1}`}>
+                    {m}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {/* Year */}
+            <Select onValueChange={setYear} defaultValue={year}>
+              <SelectTrigger className="w-full bg-white">
+                <SelectValue placeholder="Year" />
+              </SelectTrigger>
+              <SelectContent>
+                {years.map((y) => (
+                  <SelectItem key={y} value={`${y}`}>
+                    {y}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           {errors.dob && <p className="text-red-600 text-sm">{errors.dob}</p>}
+
+          {/* Grade */}
+          <Select onValueChange={setGrade} defaultValue={grade}>
+            <SelectTrigger className="w-full bg-white">
+              <SelectValue placeholder="Select Grade" />
+            </SelectTrigger>
+            <SelectContent>
+              {[...Array(12).keys()].map((i) => (
+                <SelectItem key={i + 1} value={`${i + 1}`}>
+                  {`Grade ${i + 1}`}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors.grade && <p className="text-red-600 text-sm">{errors.grade}</p>}
+
+          {/* School */}
           <Input
             type="text"
             placeholder="School/Institution Name"
@@ -178,10 +190,9 @@ const Register_Ui: React.FC = () => {
             onChange={(e) => setSchool(e.target.value)}
             className="w-full bg-white"
           />
-          {errors.school && (
-            <p className="text-red-600 text-sm">{errors.school}</p>
-          )}
+          {errors.school && <p className="text-red-600 text-sm">{errors.school}</p>}
 
+          {/* Contact */}
           <Input
             type="text"
             placeholder="Parent/Guardian Contact Details"
@@ -192,19 +203,27 @@ const Register_Ui: React.FC = () => {
           {errors.contact && (
             <p className="text-red-600 text-sm">{errors.contact}</p>
           )}
+
+          {/* Submit Button */}
+          {/* <Button
+            onClick={handleSubmit}
+            className="w-full mt-6"
+            style={{ backgroundColor: "#6e4a99" }}
+          >
+            Submit
+          </Button> */}
+          <div className="flex justify-center">
+          <button className="bg-[#6e4a99] text-white font-bold rounded-full px-12 py-2 "  onClick={handleSubmit}>
+            Submit
+            </button>
+          </div>
+
+          <p className="mt-6">
+            By submitting the profile details, I agree to the{" "}
+            <span className="underline">Terms & Conditions {"  "}</span>
+            and <span className="underline">Privacy Policy</span>
+          </p>
         </div>
-        <Button
-          onClick={handleSubmit}
-          className="w-full mt-6"
-          style={{ backgroundColor: "#6e4a99" }}
-        >
-          Submit
-        </Button>
-        <p className="mt-6">
-          By submitting the profile details, I agree to the{" "}
-          <span className="underline">Terms & Conditions {"  "}</span>
-          and <span className="underline">Privacy Policy</span>
-        </p>
       </CardContent>
     </Card>
   );

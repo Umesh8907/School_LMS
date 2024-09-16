@@ -3,7 +3,7 @@
 import React from "react";
 import Image, { StaticImageData } from "next/image";
 import expert1 from "../../assets/experts/1.png"; // Assuming this path is correct
-import { Progress } from "../ui/progress";
+import { Progress } from "../ui/progress"; // Assuming Progress is imported correctly
 
 interface Module {
   id: number;

@@ -10,7 +10,7 @@ import React from "react";
 const page = () => {
   return (
     <div className="md:w-[96%] w-[95%] mx-auto mb-20 ">
-      <h1>Dashboard</h1>
+      
       <Navbar/>
 
       <Profile_Card />

@@ -3,7 +3,7 @@ import school_girl from "../../assets/school_girl.png";
 import Login_Ui from "@/components/widgets/Login_Ui";
 import Register_Ui from "@/components/widgets/Register_Ui";
 import Cart from "@/components/widgets/Cart";
-import logo from "../../assets/favicon.png";
+import logo from "../../assets/Infano Logo.png";
 export default function Purchase() {
   return (
     <div className="md:flex md:h-screen w-full ">
