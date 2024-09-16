@@ -13,6 +13,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Tabs } from "@/components/ui/tabs";
 import TabsDemo from "@/components/widgets/Tabs";
+import CourseSidebar from "@/components/program/CourseSidebar";
 
 
 const page = () => {
@@ -87,12 +88,7 @@ const page = () => {
         </div>
         <div className="w-[30%]">{/* Module Section */}
           <div>
-            <h2 className="text-lg font-bold">Module 1: Introduction</h2>
-            <ul>
-              <li>Introduction to Yoga</li>
-              <li>Benefits of Yoga</li>
-              <li>Types of Yoga</li>
-            </ul>
+            <CourseSidebar/>
           </div>
 
         </div>
