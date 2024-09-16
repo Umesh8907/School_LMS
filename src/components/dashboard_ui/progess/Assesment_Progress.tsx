@@ -4,10 +4,10 @@ import React, { useState } from "react";
 const Assesment_Progress = () => {
     const [score, setScore] = useState(4.2)
   return ( 
-    <div className="p-8 bg-[#ebf3ff] rounded-xl flex flex-col gap-6 h-full border md:mt-0 mt-4">
-      <div className="flex  justify-between items-center">
+    <div className="p-6 bg-[#ebf3ff] rounded-xl flex flex-col gap-6 h-full border md:mt-0 mt-4">
+      <div className="flex  justify-between items-center gap-4">
         
-        <div className="md:w-22 md:h-14 w-20 h-12  rounded-md bg-blue-500 flex items-center  justify-center"   >
+        <div className="md:w-20 md:h-14 w-20 h-12  rounded-md bg-blue-500 flex items-center  justify-center "   >
           {/* first word of the module title */}
          <p className="md:text-[28px] text-[22px] font-bold text-center ">
             {score}

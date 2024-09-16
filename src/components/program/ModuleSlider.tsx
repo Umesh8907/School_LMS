@@ -56,7 +56,19 @@ const ModuleCards: React.FC = () => {
     <div className="overflow-x-auto py-4">
       <div className="flex space-x-4 min-w-max">
         {modules.map((module, index) => (
-          <div key={module.id} className="p-4 shadow-lg rounded-xl border">
+          <div
+            key={module.id}
+            className={`relative p-4 shadow-md bg-[#f4f2ff] rounded-xl border w-80 h-40 ${
+              index !== 0 ? "grayscale opacity-50 pointer-events-none" : ""
+            }`}
+          >
+            {/* "Live" label in the top-right corner */}
+            {index === 0 && (
+              <div className="flex items-center gap-2 absolute top-2 right-2 text-sm font-semibold bg-green-600 text-white px-2 rounded">
+                <div className="w-2 h-2 rounded-full bg-white"></div>
+                <span className="uppercase">Live</span>
+              </div>
+            )}
             <div className="flex gap-4 items-center">
               <Image
                 src={module.imageUrl}
@@ -71,7 +83,6 @@ const ModuleCards: React.FC = () => {
             <div className="flex flex-col justify-center items-center gap-2 mt-4">
               {index === 0 ? (
                 <>
-                  <p className="text-sm font-semibold text-green-600">Live</p>
                   <Progress
                     value={module.progressStatus}
                     className="w-[150px] h-[15px] bg-white rounded-lg shadow-lg border"
