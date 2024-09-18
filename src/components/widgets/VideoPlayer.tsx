@@ -1,40 +1,31 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import ReactPlayer from "react-player";
+"use client"; // Ensure this component is a client component
 
-interface VideoPlayerProps {
-  url: string;
-}
+import { useCourse } from "@/context/CourseContext";
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ url }) => {
-  const [isClient, setIsClient] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Track video loading state
+const VideoPlayer = () => {
+  const { activeChapter } = useCourse();
 
-  useEffect(() => {
-    setIsClient(true);
-  }, [3000]);
+  // Ensure that activeChapter and its video URL are defined
+  const videoUrl = activeChapter?.resources?.[0]?.filePath;
 
-  const handleReady = () => {
-    setIsLoading(true); // When video is ready, hide the skeleton
-  };
-
-  if (!isClient) {
-    return null;
-  }
+  // YouTube embed URL format
+  const embedUrl = videoUrl ? videoUrl.replace("watch?v=", "embed/") : "";
 
   return (
-    <div className="relative overflow-hidden rounded-xl w-full h-[500px]">
-      {isLoading && (
-        <div className="absolute top-0 left-0 w-full h-full bg-gray-500 animate-pulse rounded-xl"></div>
+    <div className="w-full h-[500px] bg-black mb-4 relative">
+      {videoUrl ? (
+        <iframe
+          width="100%"
+          height="100%"
+          src={embedUrl}
+      
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          title="Video Player"
+        />
+      ) : (
+        <p className="text-white">No video available</p>
       )}
-      <ReactPlayer
-        url={url}
-        width="100%"
-        height="100%"
-        controls={true}
-        className="absolute top-0 left-0"
-        onReady={handleReady} // Trigger handleReady when the video is ready
-      />
     </div>
   );
 };
