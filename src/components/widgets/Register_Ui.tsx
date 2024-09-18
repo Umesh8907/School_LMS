@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import React, { useState } from "react";
 import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
@@ -10,9 +10,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-
-import axios from "axios"; // axios for API requests
+import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
+import axios from "axios";
 import { useRegistration } from "@/context/RegistrationContext";
+import { useRouter } from "next/navigation";
+import { FaSpinner } from "react-icons/fa6";
 
 // Helper function to calculate age based on DOB
 const calculateAge = (dob: string) => {
@@ -47,7 +49,6 @@ const validateProfile = ({
 }) => {
   const errors: { [key: string]: string } = {};
   const gradeAgeRanges = {
-    
     "6": [11, 14],
     "7": [12, 15],
     "8": [13, 18],
@@ -90,9 +91,18 @@ const Register_Ui: React.FC = () => {
   const [school, setSchool] = useState("");
   const [contact, setContact] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [showPopover, setShowPopover] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { setRegistrationData } = useRegistration(); // use the context to store data
+  const router = useRouter(); // Next.js router for navigation
 
+  const handleFieldChange = (field: string, value: string) => {
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [field]: "", // Clear the error message for the specific field
+    }));
+  };
   // Generate date options
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
   const months = [
@@ -114,52 +124,104 @@ const Register_Ui: React.FC = () => {
     (_, i) => new Date().getFullYear() - i
   );
 
-  const handleSubmit = async () => {
-    // Ensure month and day are in two-digit format (e.g., 01, 09)
-    const formattedMonth = month.padStart(2, "0");
-    const formattedDay = day.padStart(2, "0");
-    const dob = `${year}-${formattedMonth}-${formattedDay}`; // YYYY-MM-DD format
+const handleSubmit = async () => {
+  setLoading(true); // Show loading spinner while processing the request
 
-    const validationErrors = validateProfile({
-      name,
-      email,
-      dob,
-      grade,
-      school,
-      contact,
-    });
+  // Convert month name to numeric format
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const monthIndex = monthNames.indexOf(month);
+  const formattedMonth = (monthIndex + 1).toString().padStart(2, "0");
 
-    if (Object.keys(validationErrors).length === 0) {
-      try {
-        // Data structure to match the API requirements
-        const requestData = {
-          name,
-          email,
-          dateOfBirth: dob, // formatted in YYYY-MM-DD
-          grade: parseInt(grade), // Ensure grade is a number
-          institution: school, // Assuming school is the institution name
-          parentContact: contact, // Assuming contact is a string
-        };
+  // Format day and year
+  const formattedDay = day.padStart(2, "0");
+  const dob = `${year}-${formattedMonth}-${formattedDay}`;
 
-        // Sending the POST request to the API
-        const response = await axios.post(
-          "https://infanoapi.pocapi.in/api/Student/Create",
-          requestData
-        );
+  const validationErrors = validateProfile({
+    name,
+    email,
+    dob,
+    grade,
+    school,
+    contact,
+  });
 
-        if (response.data.isSuccess) {
-          setRegistrationData(response.data.payload); // Store response data in context
-          console.log("Registration successful", response.data.payload);
-        } else {
-          console.error("Registration failed", response.data.messages);
-        }
-      } catch (error) {
-        console.error("API error", error);
+  // Clear previous errors before validating
+  setErrors({});
+
+  if (Object.keys(validationErrors).length === 0) {
+    try {
+      const requestData = {
+        name,
+        email,
+        dateOfBirth: dob,
+        grade: parseInt(grade),
+        institution: school,
+        parentContact: contact,
+      };
+
+      console.log("Sending request with data: ", requestData); // Debugging
+
+      const response = await axios.post(
+        "https://infanoapi.pocapi.in/api/Student/Create",
+        requestData
+      );
+
+      console.log("API Response: ", response.data); // Debugging
+
+      if (response.data.isSuccess) {
+        setErrors({});
+        setRegistrationData(response.data.payload); // Store registration data in context
+        setLoading(false);
+        console.log("Registration successful", response.data.payload);
+        setShowPopover(true); // Show popover on success
+        setTimeout(() => {
+          router.push("/purchase"); // Navigate to /purchase after delay
+        }, 3000); // 3 seconds delay before redirecting
+      } else if (response.data.messages) {
+        const backendErrorString = response.data.messages.join(", ");
+        setErrors({ general: backendErrorString }); // Display backend errors as general error
+        console.log("Backend validation errors: ", backendErrorString); // Debugging
+        setLoading(false); // Stop loading if error occurs
       }
-    } else {
-      setErrors(validationErrors);
+    } catch (error) {
+      setLoading(false); // Stop loading if error occurs
+
+      // Handle Axios errors (network issues, server errors)
+      console.error("Error during request:", error); // Debugging: Log the error details
+
+      if (axios.isAxiosError(error)) {
+        const responseError = error.response?.data || {};
+        const errorMessage =
+          responseError.messages?.join(", ") ||
+          responseError.message ||
+          "An error occurred.";
+        setErrors({ general: errorMessage }); // Display general error message
+        console.log("Error message from API: ", errorMessage); // Debugging
+      } else {
+        setErrors({ general: "An unexpected error occurred." });
+      }
     }
-  };
+  } else {
+    setErrors(validationErrors); // Show frontend validation errors
+    setLoading(false); // Stop loading if validation fails
+    console.log("Validation errors: ", validationErrors); // Debugging
+  }
+};
+
+
 
   return (
     <Card className="max-w-lg mx-auto mt-10 p-6 bg-[#faf9ff]">
@@ -177,7 +239,10 @@ const Register_Ui: React.FC = () => {
             type="text"
             placeholder="Full Name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              setName(e.target.value);
+              handleFieldChange("name", e.target.value);
+            }}
             className="w-full bg-white"
           />
           {errors.name && <p className="text-red-600 text-sm">{errors.name}</p>}
@@ -188,7 +253,10 @@ const Register_Ui: React.FC = () => {
             type="text"
             placeholder="Email Address"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              handleFieldChange("email", e.target.value);
+            }}
             className="w-full bg-white"
           />
           {errors.email && (
@@ -199,7 +267,13 @@ const Register_Ui: React.FC = () => {
           <label className="text-sm font-semibold">Date of Birth</label>
           <div className="flex gap-4">
             {/* Day */}
-            <Select onValueChange={setDay} defaultValue={day}>
+            <Select
+              onValueChange={(value) => {
+                setDay(value);
+                handleFieldChange("dob", value);
+              }}
+              defaultValue={day}
+            >
               <SelectTrigger className="w-full bg-white">
                 <SelectValue placeholder="Day" />
               </SelectTrigger>
@@ -213,13 +287,19 @@ const Register_Ui: React.FC = () => {
             </Select>
 
             {/* Month */}
-            <Select onValueChange={setMonth} defaultValue={month}>
+            <Select
+              onValueChange={(value) => {
+                setMonth(value);
+                handleFieldChange("dob", value);
+              }}
+              defaultValue={month}
+            >
               <SelectTrigger className="w-full bg-white">
                 <SelectValue placeholder="Month" />
               </SelectTrigger>
               <SelectContent>
-                {months.map((m, index) => (
-                  <SelectItem key={index} value={`${index + 1}`}>
+                {months.map((m) => (
+                  <SelectItem key={m} value={`${m}`}>
                     {m}
                   </SelectItem>
                 ))}
@@ -227,7 +307,13 @@ const Register_Ui: React.FC = () => {
             </Select>
 
             {/* Year */}
-            <Select onValueChange={setYear} defaultValue={year}>
+            <Select
+              onValueChange={(value) => {
+                setYear(value);
+                handleFieldChange("dob", value);
+              }}
+              defaultValue={year}
+            >
               <SelectTrigger className="w-full bg-white">
                 <SelectValue placeholder="Year" />
               </SelectTrigger>
@@ -244,16 +330,24 @@ const Register_Ui: React.FC = () => {
 
           {/* Grade */}
           <label className="text-sm font-semibold">Grade</label>
-          <Select onValueChange={setGrade} defaultValue={grade}>
+          <Select
+            onValueChange={(value) => {
+              setGrade(value);
+              handleFieldChange("grade", value);
+            }}
+            defaultValue={grade}
+          >
             <SelectTrigger className="w-full bg-white">
               <SelectValue placeholder="Select Grade" />
             </SelectTrigger>
             <SelectContent>
-              {[...Array(7).keys()].map((i) => (
-                <SelectItem key={i + 6} value={`${i + 6}`}>
-                  {`Grade ${i + 6}`}
-                </SelectItem>
-              ))}
+              <SelectItem value="6">Grade 6</SelectItem>
+              <SelectItem value="7">Grade 7</SelectItem>
+              <SelectItem value="8">Grade 8</SelectItem>
+              <SelectItem value="9">Grade 9</SelectItem>
+              <SelectItem value="10">Grade 10</SelectItem>
+              <SelectItem value="11">Grade 11</SelectItem>
+              <SelectItem value="12">Grade 12</SelectItem>
             </SelectContent>
           </Select>
           {errors.grade && (
@@ -261,14 +355,15 @@ const Register_Ui: React.FC = () => {
           )}
 
           {/* School */}
-          <label className="text-sm font-semibold">
-            School/Institution Name
-          </label>
+          <label className="text-sm font-semibold">School/Institution</label>
           <Input
             type="text"
             placeholder="School/Institution Name"
             value={school}
-            onChange={(e) => setSchool(e.target.value)}
+            onChange={(e) => {
+              setSchool(e.target.value);
+              handleFieldChange("school", e.target.value);
+            }}
             className="w-full bg-white"
           />
           {errors.school && (
@@ -277,34 +372,51 @@ const Register_Ui: React.FC = () => {
 
           {/* Contact */}
           <label className="text-sm font-semibold">
-            Parent/Guardian Contact Details
+            Parent/Guardian Contact Number
           </label>
           <Input
             type="text"
-            placeholder="Parent/Guardian Contact Details"
+            placeholder="Contact Number"
             value={contact}
-            onChange={(e) => setContact(e.target.value)}
+            onChange={(e) => {
+              setContact(e.target.value);
+              handleFieldChange("contact", e.target.value);
+            }}
             className="w-full bg-white"
           />
           {errors.contact && (
             <p className="text-red-600 text-sm">{errors.contact}</p>
           )}
 
-          {/* Submit Button */}
-          <div className="flex justify-center">
-            <button
-              className="bg-[#6e4a99] text-white font-bold rounded-full px-12 py-2 "
-              onClick={handleSubmit}
-            >
-              Submit
-            </button>
-          </div>
+          {errors.general && (
+            <p className="text-red-600 text-sm">{errors.general}</p>
+          )}
 
-          <p className="mt-6">
-            By submitting the profile details, I agree to the{" "}
-            <span className="underline">Terms & Conditions {"  "}</span>
-            and <span className="underline">Privacy Policy</span>
-          </p>
+          {/* Submit Button */}
+          <Button
+            onClick={handleSubmit}
+            disabled={loading}
+            className="w-full mt-6"
+          >
+            {loading ? (
+              <FaSpinner className="animate-spin" />
+            ) : (
+              "Submit and Continue"
+            )}
+          </Button>
+
+          {/* Popover on successful registration */}
+          <Popover open={showPopover} onOpenChange={setShowPopover}>
+            <PopoverTrigger asChild></PopoverTrigger>
+            <PopoverContent className="p-6 bg-white">
+              <h2 className="text-lg font-semibold">
+                Registration Successful!
+              </h2>
+              <p className="mt-2">
+                Redirecting to the purchase page in a few seconds...
+              </p>
+            </PopoverContent>
+          </Popover>
         </div>
       </CardContent>
     </Card>
