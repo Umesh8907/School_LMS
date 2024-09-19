@@ -1,12 +1,20 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 
-// Fetches the course data from the external API
-export async function GET() {
+// Fetches the course data based on the course ID passed as a query parameter
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const courseId = searchParams.get("courseId");
+
+    if (!courseId) {
+      return NextResponse.json({ error: "Course ID is required" }, { status: 400 });
+    }
+
     const response = await axios.get(
-      "https://infanoapi.pocapi.in/api/Course/GetById/66e6f0217a728766ffb88a70"
+     
     );
+    
     return NextResponse.json(response.data); // Respond with the fetched data
   } catch (error) {
     console.error("Error fetching course data:", error);

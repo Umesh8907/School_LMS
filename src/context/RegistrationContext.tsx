@@ -1,5 +1,6 @@
-'use client'
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+"use client";
+import React, { createContext, useState, useContext, useEffect } from "react";
+import axios from "axios";
 
 // Define the context and its type
 interface RegistrationData {
@@ -24,27 +25,39 @@ interface RegistrationData {
 
 interface RegistrationContextType {
   registrationData: RegistrationData | null;
-  setRegistrationData: (data: RegistrationData) => void;
+  setRegistrationData: React.Dispatch<
+    React.SetStateAction<RegistrationData | null>
+  >;
 }
 
-const RegistrationContext = createContext<RegistrationContextType | undefined>(undefined);
+// Create the context
+const RegistrationContext = createContext<RegistrationContextType | undefined>(
+  undefined
+);
+
+// Provider component
+export const RegistrationProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [registrationData, setRegistrationData] =
+    useState<RegistrationData | null>(null);
+
+  return (
+    <RegistrationContext.Provider
+      value={{ registrationData, setRegistrationData }}
+    >
+      {children}
+    </RegistrationContext.Provider>
+  );
+};
 
 // Custom hook to use the context
 export const useRegistration = () => {
   const context = useContext(RegistrationContext);
   if (!context) {
-    throw new Error('useRegistration must be used within a RegistrationProvider');
+    throw new Error(
+      "useRegistration must be used within a RegistrationProvider"
+    );
   }
   return context;
-};
-
-// Provider component
-export const RegistrationProvider = ({ children }: { children: ReactNode }) => {
-  const [registrationData, setRegistrationData] = useState<RegistrationData | null>(null);
-
-  return (
-    <RegistrationContext.Provider value={{ registrationData, setRegistrationData }}>
-      {children}
-    </RegistrationContext.Provider>
-  );
 };

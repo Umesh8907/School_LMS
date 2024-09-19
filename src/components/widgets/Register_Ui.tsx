@@ -12,7 +12,6 @@ import {
 } from "../ui/select";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import axios from "axios";
-import { useRegistration } from "@/context/RegistrationContext";
 import { useRouter } from "next/navigation";
 import { FaSpinner } from "react-icons/fa6";
 
@@ -49,13 +48,11 @@ const validateProfile = ({
 }) => {
   const errors: { [key: string]: string } = {};
   const gradeAgeRanges = {
-    "6": [11, 14],
-    "7": [12, 15],
-    "8": [13, 18],
-    "9": [15, 20],
-    "10": [15, 16],
-    "11": [16, 17],
-    "12": [17, 20],
+    "6": [10, 14],
+    "7": [11, 15],
+    "8": [12, 16],
+    "9": [13, 17],
+    "10": [13, 18],
   };
 
   if (!name) errors.name = "Full name is required.";
@@ -94,7 +91,6 @@ const Register_Ui: React.FC = () => {
   const [showPopover, setShowPopover] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { setRegistrationData } = useRegistration(); // use the context to store data
   const router = useRouter(); // Next.js router for navigation
 
   const handleFieldChange = (field: string, value: string) => {
@@ -103,7 +99,7 @@ const Register_Ui: React.FC = () => {
       [field]: "", // Clear the error message for the specific field
     }));
   };
-  // Generate date options
+
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
   const months = [
     "January",
@@ -124,104 +120,93 @@ const Register_Ui: React.FC = () => {
     (_, i) => new Date().getFullYear() - i
   );
 
-const handleSubmit = async () => {
-  setLoading(true); // Show loading spinner while processing the request
+  const handleSubmit = async () => {
+    setLoading(true); // Show loading spinner while processing the request
 
-  // Convert month name to numeric format
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  const monthIndex = monthNames.indexOf(month);
-  const formattedMonth = (monthIndex + 1).toString().padStart(2, "0");
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const monthIndex = monthNames.indexOf(month);
+    const formattedMonth = (monthIndex + 1).toString().padStart(2, "0");
 
-  // Format day and year
-  const formattedDay = day.padStart(2, "0");
-  const dob = `${year}-${formattedMonth}-${formattedDay}`;
+    const formattedDay = day.padStart(2, "0");
+    const dob = `${year}-${formattedMonth}-${formattedDay}`;
 
-  const validationErrors = validateProfile({
-    name,
-    email,
-    dob,
-    grade,
-    school,
-    contact,
-  });
+    const validationErrors = validateProfile({
+      name,
+      email,
+      dob,
+      grade,
+      school,
+      contact,
+    });
 
-  // Clear previous errors before validating
-  setErrors({});
+    setErrors({});
 
-  if (Object.keys(validationErrors).length === 0) {
-    try {
-      const requestData = {
-        name,
-        email,
-        dateOfBirth: dob,
-        grade: parseInt(grade),
-        institution: school,
-        parentContact: contact,
-      };
+    if (Object.keys(validationErrors).length === 0) {
+      try {
+        const requestData = {
+          userId: "66ea8f4cd2586ff84ffb523f", // Hard-coded userId
+          name,
+          email,
+          dateOfBirth: dob,
+          grade: parseInt(grade),
+          institution: school,
+          parentContact: contact,
+        };
+  
 
-      console.log("Sending request with data: ", requestData); // Debugging
+        const response = await axios.post(
+          "https://infanoapi.pocapi.in/api/Student/Create",
+          requestData
+        );
 
-      const response = await axios.post(
-        "https://infanoapi.pocapi.in/api/Student/Create",
-        requestData
-      );
+        if (response.data.isSuccess) {
+          setErrors({});
+          setLoading(false);
+          setShowPopover(true);
 
-      console.log("API Response: ", response.data); // Debugging
+          // Store registration data in localStorage
+          localStorage.setItem("registrationData", JSON.stringify(response.data.payload));
 
-      if (response.data.isSuccess) {
-        setErrors({});
-        setRegistrationData(response.data.payload); // Store registration data in context
+          setTimeout(() => {
+            router.push("/purchase");
+          }, 3000);
+        } else if (response.data.messages) {
+          const backendErrorString = response.data.messages.join(", ");
+          setErrors({ general: backendErrorString });
+          setLoading(false);
+        }
+      } catch (error) {
         setLoading(false);
-        console.log("Registration successful", response.data.payload);
-        setShowPopover(true); // Show popover on success
-        setTimeout(() => {
-          router.push("/purchase"); // Navigate to /purchase after delay
-        }, 3000); // 3 seconds delay before redirecting
-      } else if (response.data.messages) {
-        const backendErrorString = response.data.messages.join(", ");
-        setErrors({ general: backendErrorString }); // Display backend errors as general error
-        console.log("Backend validation errors: ", backendErrorString); // Debugging
-        setLoading(false); // Stop loading if error occurs
-      }
-    } catch (error) {
-      setLoading(false); // Stop loading if error occurs
 
-      // Handle Axios errors (network issues, server errors)
-      console.error("Error during request:", error); // Debugging: Log the error details
-
-      if (axios.isAxiosError(error)) {
-        const responseError = error.response?.data || {};
-        const errorMessage =
-          responseError.messages?.join(", ") ||
-          responseError.message ||
-          "An error occurred.";
-        setErrors({ general: errorMessage }); // Display general error message
-        console.log("Error message from API: ", errorMessage); // Debugging
-      } else {
-        setErrors({ general: "An unexpected error occurred." });
+        if (axios.isAxiosError(error)) {
+          const responseError = error.response?.data || {};
+          const errorMessage =
+            responseError.messages?.join(", ") ||
+            responseError.message ||
+            "An error occurred.";
+          setErrors({ general: errorMessage });
+        } else {
+          setErrors({ general: "An unexpected error occurred." });
+        }
       }
+    } else {
+      setErrors(validationErrors);
+      setLoading(false);
     }
-  } else {
-    setErrors(validationErrors); // Show frontend validation errors
-    setLoading(false); // Stop loading if validation fails
-    console.log("Validation errors: ", validationErrors); // Debugging
-  }
-};
-
-
+  };
 
   return (
     <Card className="max-w-lg mx-auto mt-10 p-6 bg-[#faf9ff]">
@@ -233,7 +218,6 @@ const handleSubmit = async () => {
           Complete your profile to get course access
         </p>
         <div className="mt-4 flex flex-col gap-4">
-          {/* Full Name */}
           <label className="text-sm font-semibold">Full Name</label>
           <Input
             type="text"
@@ -247,7 +231,6 @@ const handleSubmit = async () => {
           />
           {errors.name && <p className="text-red-600 text-sm">{errors.name}</p>}
 
-          {/* Email */}
           <label className="text-sm font-semibold">Email Address</label>
           <Input
             type="text"
@@ -263,10 +246,8 @@ const handleSubmit = async () => {
             <p className="text-red-600 text-sm">{errors.email}</p>
           )}
 
-          {/* Date of Birth */}
           <label className="text-sm font-semibold">Date of Birth</label>
           <div className="flex gap-4">
-            {/* Day */}
             <Select
               onValueChange={(value) => {
                 setDay(value);
@@ -286,7 +267,6 @@ const handleSubmit = async () => {
               </SelectContent>
             </Select>
 
-            {/* Month */}
             <Select
               onValueChange={(value) => {
                 setMonth(value);
@@ -306,7 +286,6 @@ const handleSubmit = async () => {
               </SelectContent>
             </Select>
 
-            {/* Year */}
             <Select
               onValueChange={(value) => {
                 setYear(value);
@@ -328,7 +307,6 @@ const handleSubmit = async () => {
           </div>
           {errors.dob && <p className="text-red-600 text-sm">{errors.dob}</p>}
 
-          {/* Grade */}
           <label className="text-sm font-semibold">Grade</label>
           <Select
             onValueChange={(value) => {
@@ -346,19 +324,16 @@ const handleSubmit = async () => {
               <SelectItem value="8">Grade 8</SelectItem>
               <SelectItem value="9">Grade 9</SelectItem>
               <SelectItem value="10">Grade 10</SelectItem>
-              <SelectItem value="11">Grade 11</SelectItem>
-              <SelectItem value="12">Grade 12</SelectItem>
             </SelectContent>
           </Select>
           {errors.grade && (
             <p className="text-red-600 text-sm">{errors.grade}</p>
           )}
 
-          {/* School */}
           <label className="text-sm font-semibold">School/Institution</label>
           <Input
             type="text"
-            placeholder="School/Institution Name"
+            placeholder="School/Institution"
             value={school}
             onChange={(e) => {
               setSchool(e.target.value);
@@ -370,13 +345,12 @@ const handleSubmit = async () => {
             <p className="text-red-600 text-sm">{errors.school}</p>
           )}
 
-          {/* Contact */}
           <label className="text-sm font-semibold">
             Parent/Guardian Contact Number
           </label>
           <Input
             type="text"
-            placeholder="Contact Number"
+            placeholder="Parent/Guardian Contact Number"
             value={contact}
             onChange={(e) => {
               setContact(e.target.value);
@@ -391,33 +365,26 @@ const handleSubmit = async () => {
           {errors.general && (
             <p className="text-red-600 text-sm">{errors.general}</p>
           )}
+        </div>
 
-          {/* Submit Button */}
-          <Button
-            onClick={handleSubmit}
-            disabled={loading}
-            className="w-full mt-6"
-          >
-            {loading ? (
-              <FaSpinner className="animate-spin" />
-            ) : (
-              "Submit and Continue"
-            )}
-          </Button>
+        <Button
+          onClick={handleSubmit}
+          disabled={loading}
+          className="w-full bg-blue-500 text-white mt-6"
+        >
+          {loading ? <FaSpinner className="animate-spin" /> : "Continue"}
+        </Button>
 
-          {/* Popover on successful registration */}
-          <Popover open={showPopover} onOpenChange={setShowPopover}>
-            <PopoverTrigger asChild></PopoverTrigger>
-            <PopoverContent className="p-6 bg-white">
-              <h2 className="text-lg font-semibold">
-                Registration Successful!
-              </h2>
-              <p className="mt-2">
-                Redirecting to the purchase page in a few seconds...
-              </p>
+        {showPopover && (
+          <Popover open={true}>
+            <PopoverTrigger>
+              <div></div>
+            </PopoverTrigger>
+            <PopoverContent>
+              Profile updated! You will be redirected shortly.
             </PopoverContent>
           </Popover>
-        </div>
+        )}
       </CardContent>
     </Card>
   );

@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        domains: ['via.placeholder.com'], // Add other domains if needed
-      },
+  images: {
+    domains: ['infanoapi.pocapi.in'], // Add your image domain here
+  },
 };
 
 export default nextConfig;
