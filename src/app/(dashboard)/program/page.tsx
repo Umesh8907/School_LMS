@@ -36,7 +36,7 @@ const page = () => {
             </p>
             <div className="relative inline-block">
               <Link
-                href="#"
+                href="/assessment"
                 className="bg-[#f5e5eb] px-8 py-2 rounded-lg inline-block"
               >
                 <p>Assessment</p>

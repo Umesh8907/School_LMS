@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
@@ -14,6 +14,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FaSpinner } from "react-icons/fa6";
+import Link from "next/link";
 
 // Helper function to calculate age based on DOB
 const calculateAge = (dob: string) => {
@@ -165,7 +166,6 @@ const Register_Ui: React.FC = () => {
           institution: school,
           parentContact: contact,
         };
-  
 
         const response = await axios.post(
           "https://infanoapi.pocapi.in/api/Student/Create",
@@ -178,7 +178,10 @@ const Register_Ui: React.FC = () => {
           setShowPopover(true);
 
           // Store registration data in localStorage
-          localStorage.setItem("registrationData", JSON.stringify(response.data.payload));
+          localStorage.setItem(
+            "registrationData",
+            JSON.stringify(response.data.payload)
+          );
 
           setTimeout(() => {
             router.push("/purchase");
@@ -209,7 +212,7 @@ const Register_Ui: React.FC = () => {
   };
 
   return (
-    <Card className="max-w-lg mx-auto mt-10 p-6 bg-[#faf9ff]">
+    <Card className="w-[60%] mx-auto mt-10 p-6 bg-[#faf9ff]">
       <CardContent>
         <h1 className="lg:text-[22px] underline font-semibold">
           Profile Details
@@ -217,8 +220,7 @@ const Register_Ui: React.FC = () => {
         <p className="mt-4 text-[18px]">
           Complete your profile to get course access
         </p>
-        <div className="mt-4 flex flex-col gap-4">
-          <label className="text-sm font-semibold">Full Name</label>
+        <div className="mt-4 flex flex-col gap-6">
           <Input
             type="text"
             placeholder="Full Name"
@@ -231,7 +233,6 @@ const Register_Ui: React.FC = () => {
           />
           {errors.name && <p className="text-red-600 text-sm">{errors.name}</p>}
 
-          <label className="text-sm font-semibold">Email Address</label>
           <Input
             type="text"
             placeholder="Email Address"
@@ -246,8 +247,9 @@ const Register_Ui: React.FC = () => {
             <p className="text-red-600 text-sm">{errors.email}</p>
           )}
 
-          <label className="text-sm font-semibold">Date of Birth</label>
+<label className="text-sm font-semibold text-gray-500">Date of Birth</label>
           <div className="flex gap-4">
+          
             <Select
               onValueChange={(value) => {
                 setDay(value);
@@ -307,7 +309,6 @@ const Register_Ui: React.FC = () => {
           </div>
           {errors.dob && <p className="text-red-600 text-sm">{errors.dob}</p>}
 
-          <label className="text-sm font-semibold">Grade</label>
           <Select
             onValueChange={(value) => {
               setGrade(value);
@@ -330,7 +331,6 @@ const Register_Ui: React.FC = () => {
             <p className="text-red-600 text-sm">{errors.grade}</p>
           )}
 
-          <label className="text-sm font-semibold">School/Institution</label>
           <Input
             type="text"
             placeholder="School/Institution"
@@ -345,9 +345,6 @@ const Register_Ui: React.FC = () => {
             <p className="text-red-600 text-sm">{errors.school}</p>
           )}
 
-          <label className="text-sm font-semibold">
-            Parent/Guardian Contact Number
-          </label>
           <Input
             type="text"
             placeholder="Parent/Guardian Contact Number"
@@ -370,10 +367,12 @@ const Register_Ui: React.FC = () => {
         <Button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-blue-500 text-white mt-6"
+          className="rounded-full text-xl flex mx-auto mt-8 px-14 py-6 font-bold"
+          style={{ backgroundColor: "#6e4a99" }}
         >
-          {loading ? <FaSpinner className="animate-spin" /> : "Continue"}
+          {loading ? <FaSpinner className="animate-spin" /> : "Submit"}
         </Button>
+        <p className="text-sm text-left text-gray-500 mt-4">By submitting the profile details, I agree to the <Link href="https://infano.care/policy/#agreement" target="_blank" rel="noopener noreferrer"><span className="underline">Terms & Conditions</span></Link> and <Link href="https://infano.care/policy/#want"><span className="underline">Privacy Policy</span></Link></p>
 
         {showPopover && (
           <Popover open={true}>

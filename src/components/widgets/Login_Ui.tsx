@@ -157,7 +157,7 @@ const PhoneNumberInput: React.FC = () => {
   };
 
   return (
-    <Card className="max-w-lg mx-auto mt-10 p-10 bg-[#faf9ff]">
+    <Card className="w-[60%] mx-auto mt-10 p-6 bg-[#faf9ff]">
       <CardHeader>
         <h1 className="lg:text-[22px] underline font-semibold mb-4">
           Enter your mobile number
@@ -196,12 +196,12 @@ const PhoneNumberInput: React.FC = () => {
                     </span>
                     <SelectValue>{countryCode}</SelectValue>
                   </SelectTrigger>
-                  <SelectContent className="flex">
+                  <SelectContent className="flex ">
                     {countries.map((country) => (
                       <SelectItem
                         key={`${country.code}-${country.name}`} // Ensure unique key by combining code and name
                         value={country.code}
-                        className="flex items-center"
+                        className=" items-center"
                       >
                         <img
                           src={country.flag}
@@ -226,7 +226,7 @@ const PhoneNumberInput: React.FC = () => {
                 placeholder="Enter phone number"
                 value={phoneNumber}
                 onChange={handlePhoneNumberChange}
-                className="w-[200px] h-[39px]"
+                className="w-[300px] h-12 text-xl"
               />
             </div>
           </div>
@@ -250,7 +250,7 @@ const PhoneNumberInput: React.FC = () => {
                   onChange={(e) => handleOtpChange(e.target.value, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
                   ref={(el) => (otpRefs.current[index] = el || null)} // Corrected ref callback
-                  className="text-center w-12"
+                  className="text-center w-16 h-12"
                 />
               ))}
             </div>
@@ -262,13 +262,16 @@ const PhoneNumberInput: React.FC = () => {
         )}
 
         {/* Button */}
-      
-        <div className="flex justify-center">
-        <button className="bg-[#6e4a99] text-white font-bold rounded-full px-12 py-2 "  onClick={handleSubmit}>
-        {otpRequested ? "Submit" : "Request For OTP"}
-            </button>
-          </div>
 
+        <div className="flex justify-center">
+          <button
+            onClick={handleSubmit}
+            className="rounded-full text-xl flex mx-auto mt-8 px-6 py-2 font-bold text-white"
+            style={{ backgroundColor: "#6e4a99" }}
+          >
+            {otpRequested ? "Submit" : "Request For OTP"}
+          </button>
+        </div>
       </CardContent>
     </Card>
   );

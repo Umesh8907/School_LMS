@@ -1,12 +1,12 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import { Card } from '../ui/card';
-import Image from 'next/image';
+"use client";
+import React, { useEffect, useState } from "react";
+import { Card } from "../ui/card";
+import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
-import { Button } from '../ui/button';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import { loadScript } from '../../utils/loadscript'; // Utility to load Razorpay script
+import { Button } from "../ui/button";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { loadScript } from "../../utils/loadscript"; // Utility to load Razorpay script
 
 const Cart = () => {
   const [courseData, setCourseData] = useState(null);
@@ -19,14 +19,14 @@ const Cart = () => {
 
   // Fetch the course data and grade from localStorage when the component mounts
   useEffect(() => {
-    const storedData = localStorage.getItem('registrationData');
+    const storedData = localStorage.getItem("registrationData");
     if (storedData) {
       const parsedData = JSON.parse(storedData);
       setRegistrationResponse(parsedData);
       console.log(parsedData);
       // Extract course and grade data
       setCourseData(parsedData.offeredCourses[0]); // Assuming there's one course, adjust if needed
-      setGrade(parsedData.grade); // Grade is stored at the registrationData level
+      setGrade(parsedData.offeredCourses[0].allowedGrades); // Grade is stored at the registrationData level
     }
   }, []);
 
@@ -44,21 +44,21 @@ const Cart = () => {
       // Prepare the payload for order creation
       const payload = {
         userId: registrationResponse.userId, // Assuming registrationResponse has the _id field
-        mandate: 'once',
+        mandate: "once",
         isRecurring: false,
         cart: [
           {
             orderAmount: courseData.discountedPrice,
             studentId: registrationResponse.id,
             courseId: courseData.id,
-            reference: 'string',
+            reference: "string",
           },
         ],
       };
 
       // Make API call to fetch order ID and payment details
       const { data } = await axios.post(
-        'https://infanoapi.pocapi.in/api/Payment/CheckOut',
+        "https://infanoapi.pocapi.in/api/Payment/CheckOut",
         payload
       );
 
@@ -68,10 +68,10 @@ const Cart = () => {
 
         // Load Razorpay script
         const razorpayScriptLoaded = await loadScript(
-          'https://checkout.razorpay.com/v1/checkout.js'
+          "https://checkout.razorpay.com/v1/checkout.js"
         );
         if (!razorpayScriptLoaded) {
-          alert('Failed to load Razorpay SDK. Please try again.');
+          alert("Failed to load Razorpay SDK. Please try again.");
           setLoading(false);
           return;
         }
@@ -80,16 +80,16 @@ const Cart = () => {
         const options = {
           key: key, // Razorpay API key from the backend
           amount: courseData.discountedPrice * 100, // Amount in paise (₹1 = 100 paise)
-          currency: 'INR',
-          name: 'Infano Learning', // Your brand name
-          description: 'Course Purchase',
+          currency: "INR",
+          name: "Infano Learning", // Your brand name
+          description: "Course Purchase",
           order_id: orderId, // The order ID received from the backend
           handler: async function (response) {
-            console.log('Payment Success:', response);
-            alert('Payment Successful!');
+            console.log("Payment Success:", response);
+            alert("Payment Successful!");
 
             // Navigate to success page or handle post-payment logic here
-            router.push('/dashboard');
+            router.push("/dashboard");
           },
           prefill: {
             name: registrationResponse.name,
@@ -97,68 +97,85 @@ const Cart = () => {
             contact: registrationResponse.parentContact,
           },
           notes: {
-            address: 'Infano HQ',
+            address: "Infano HQ",
           },
           theme: {
-            color: '#6e4a99',
+            color: "#6e4a99",
           },
         };
 
         const paymentObject = new window.Razorpay(options);
         paymentObject.open();
       } else {
-        alert('Failed to initiate payment.');
+        alert("Failed to initiate payment.");
       }
     } catch (error) {
-      console.error('Payment initiation failed:', error);
-      alert('An error occurred during payment initiation.');
+      console.error("Payment initiation failed:", error);
+      alert("An error occurred during payment initiation.");
     } finally {
       setLoading(false);
     }
   };
+  const formatGrade = (grade) => {
+    const suffixes = ["th", "st", "nd", "rd"];
+    const v = grade % 100;
+    return grade + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
+  };
+
+  // Render the grades in the desired format
+  const formattedGrades = grade
+    ? grade
+        .map((g) => formatGrade(g))
+        .join(", ")
+        .replace(/,([^,]*)$/, " and$1")
+    : "N/A";
 
   return (
-    <Card className="w-[400px] mx-auto mt-10 p-4 bg-[#faf9ff]">
+    <Card className="w-[60%] mx-auto mt-10 p-6 bg-[#faf9ff]">
       {courseData ? (
         <Card>
-          <div className="p-4">
-            <div className="header flex gap-4 justify-around">
+          <div className="p-6">
+            <div className="header flex gap-6 justify-around">
               <Image
-                src={`https://infanoapi.pocapi.in/api/Image/Download?folder=images&fileName=No_Image_Available.jpg&uniqueFileName=${courseData.thumbnailUniqueName}&width=100&height=100`} // Replace with an actual fallback image if needed
+                src={`https://infanoapi.pocapi.in/api/Image/Download?folder=images&fileName=No_Image_Available.jpg&uniqueFileName=${courseData.thumbnailUniqueName}`} // Replace with an actual fallback image if needed
                 alt={courseData.thumbnail}
-                className="w-24 rounded-lg"
-                width={100} // Adjust dimensions as needed
-                height={100}
+                width={200} // Required by Next.js
+                height={100} // Required by Next.js
+                className="object-cover rounded-lg w-[140px] h-[120px]" // Optional Tailwind styling
               />
               <div>
-                <h1 className="text-[22px] font-bold">{courseData.name}</h1>
-                <p className="text-sm mt-2">{courseData.description}</p>
+                {/* <h1 className="text-[22px] font-bold">{courseData.name}</h1> */}
+                <h1 className="text-[22px] font-bold">Girlhood: HerNext</h1>
+                <p className=" text-sm mt-2 line-clamp-4">
+                  {courseData.description}
+                </p>
               </div>
             </div>
-            <div className="flex mt-4 justify-between">
+            <div className="flex mt-8 justify-between">
               <p>
                 <strong>Duration:</strong> {formatDuration(courseData.duration)}
               </p>
               <p>
-                <strong>Grade:</strong> {grade || 'N/A'}
+                <strong>Grade:</strong> {formattedGrades}
               </p>
             </div>
-            <p className="mt-4">
-              Based on your grade, you are eligible for the {courseData.name} course.
+            <p className="mt-8">
+              Based on your grade, you are eligible for the <strong>{courseData.name}</strong>{" "}
+              course.
             </p>
-            <Separator className="mt-6 mb-4 bg-gray-400" />
-            <div>
-              <div className="flex justify-between">
+            <Separator className="mt-8 mb-8 bg-gray-400" />
+            <div className="w-[95%] mx-auto">
+              <div className="flex justify-between ">
                 <p>Program Price:</p>
                 <p>
-                  <strong className="line-through text-gray-500">
+                  <strong className="line-through text-gray-500 text-xl">
                     ₹ {courseData.price}/-
                   </strong>
                 </p>
               </div>
               <div className="flex mt-4 justify-between">
                 <p>Empowered Price:</p>
-                <p>
+                <p className=" text-xl">
                   <strong>₹ {courseData.discountedPrice}/-</strong>
                 </p>
               </div>
@@ -168,16 +185,22 @@ const Cart = () => {
       ) : (
         <p>No course data available.</p>
       )}
-      <Button
-        onClick={initiatePayment}
-        disabled={loading}
-        className="w-full mt-6"
-        style={{ backgroundColor: '#6e4a99' }}
-      >
-        {loading ? 'Processing...' : `Proceed to Pay | ₹ ${courseData ? courseData.discountedPrice : 'N/A'}/-`}
-      </Button>
+      <div>
+        <Button
+          onClick={initiatePayment}
+          disabled={loading}
+          className="rounded-full text-xl flex mx-auto mt-8 px-8 py-6 font-bold"
+          style={{ backgroundColor: "#6e4a99" }}
+        >
+          {loading
+            ? "Processing..."
+            : `Proceed to Pay | ₹ ${
+                courseData ? courseData.discountedPrice : "N/A"
+              }/-`}
+        </Button>
+      </div>
       <p className="text-sm text-center mt-4">
-        We do not share your data with third parties.
+        We do not share your data with 3rd parties.
       </p>
     </Card>
   );
