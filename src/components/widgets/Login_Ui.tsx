@@ -10,7 +10,8 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { motion } from "framer-motion"; // Import framer-motion
+import { useRouter } from "next/navigation"; // Import useRouter for redirect
 
 // API endpoint to fetch country data
 const COUNTRIES_API = "https://restcountries.com/v3.1/all";
@@ -49,6 +50,20 @@ const PhoneNumberInput: React.FC = () => {
     otp: "",
   });
 
+  const [isExiting, setIsExiting] = useState(false); // New state to trigger card exit animation
+
+  const router = useRouter(); // Initialize the Next.js router
+
+  // Motion variants for entrance and exit animations
+  const cardVariants = {
+    hidden: { opacity: 0, y: "100%" },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", duration: 0.75 },
+    },
+    exit: { opacity: 0, y: "-100%", transition: { duration: 0.5 } },
+  };
   // Refs for OTP input fields
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -153,127 +168,145 @@ const PhoneNumberInput: React.FC = () => {
       // Submit OTP logic
       const otpCode = otp.join(""); // Combine OTP digits into one string
       console.log("Submitting OTP:", otpCode);
+
+      // Start exit animation
+      setIsExiting(true);
+
+      // Redirect to /register after animation
+      setTimeout(() => {
+        router.push("/register");
+      }, 400); // Match the duration of the exit animation (0.4s)
     }
   };
 
   return (
-    <Card className="w-[60%] mx-auto mt-10 p-6 bg-[#faf9ff]">
-      <CardHeader>
-        <h1 className="lg:text-[22px] underline font-semibold mb-4">
-          Enter your mobile number
-        </h1>
-        <p className="text-[18px]">
-          Please confirm your country code and enter the mobile number
-        </p>
-      </CardHeader>
-      <CardContent>
-        {/* Phone Number Input with Country Code */}
-        <div className="mb-6">
-          <div className="flex items-center mt-6 gap-2 ">
-            {/* Country Code Selector */}
-            <div className="flex items-center border border-gray-300 rounded-md ">
-              {countries.length > 0 && (
-                <Select
-                  onValueChange={(value) => setCountryCode(value)}
-                  defaultValue={countryCode}
-                >
-                  <SelectTrigger
-                    className="flex items-center appearance-none  "
-                    style={{
-                      WebkitAppearance: "none",
-                      MozAppearance: "none",
-                      border: "none",
-                    }} // Cross-browser support
-                  >
-                    <span className="flex items-center">
-                      <img
-                        src={
-                          countries.find((c) => c.code === countryCode)?.flag
-                        }
-                        alt="Country flag"
-                        className="w-4"
-                      />
-                    </span>
-                    <SelectValue>{countryCode}</SelectValue>
-                  </SelectTrigger>
-                  <SelectContent className="flex ">
-                    {countries.map((country) => (
-                      <SelectItem
-                        key={`${country.code}-${country.name}`} // Ensure unique key by combining code and name
-                        value={country.code}
-                        className=" items-center"
-                      >
-                        <img
-                          src={country.flag}
-                          alt={country.name}
-                          className="w-6 h-4 mr-2"
-                          loading="lazy"
-                        />
-                        <span>
-                          {country.name} ({country.code})
-                        </span>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            </div>
-
-            {/* Phone Number Input */}
-            <div className="relative flex-grow">
-              <Input
-                type="text"
-                placeholder="Enter phone number"
-                value={phoneNumber}
-                onChange={handlePhoneNumberChange}
-                className="w-[300px] h-12 text-xl"
-              />
-            </div>
-          </div>
-          {/* Phone Number Error */}
-          {errors.phoneNumber && (
-            <p className="text-red-600 text-sm mt-2">{errors.phoneNumber}</p>
-          )}
-        </div>
-
-        {/* OTP Input Field */}
-        {otpRequested && (
+    <motion.div
+      initial="hidden" // Start hidden (below screen)
+      animate={isExiting ? "exit" : "visible"} // Animate exit when isExiting is true
+      exit="exit" // Animate out (upwards) when unmounting
+      variants={cardVariants}
+      className="w-[65%] mx-auto  "
+    >
+      <Card className="p-4 bg-[#faf9ff]">
+        <CardHeader>
+          <h1 className="lg:text-[22px] md:text-[24px] underline font-semibold mb-4">
+            Enter your mobile number
+          </h1>
+          <p className="text-[18px]">
+            Please confirm your country code and enter the mobile number
+          </p>
+        </CardHeader>
+        <CardContent>
+          {/* Phone Number Input with Country Code */}
           <div className="mb-6">
-            <Label>Enter OTP</Label>
-            <div className="flex space-x-2 mt-2">
-              {otp.map((digit, index) => (
+            <div className="flex items-center mt-6 gap-2 ">
+              {/* Country Code Selector */}
+              <div className="flex items-center border border-gray-300 rounded-md ">
+                {countries.length > 0 && (
+                  <Select
+                    onValueChange={(value) => setCountryCode(value)}
+                    defaultValue={countryCode}
+                  >
+                    <SelectTrigger
+                      className="flex items-center appearance-none  h-12 text-xl bg-white"
+                      style={{
+                        WebkitAppearance: "none",
+                        MozAppearance: "none",
+                        border: "none",
+                      }} // Cross-browser support
+                    >
+                      <span className="flex items-center">
+                        <img
+                          src={
+                            countries.find((c) => c.code === countryCode)?.flag
+                          }
+                          alt="Country flag"
+                          className="w-4"
+                        />
+                      </span>
+                      <SelectValue>{countryCode}</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent className="flex ">
+                      {countries.map((country) => (
+                        <SelectItem
+                          key={`${country.code}-${country.name}`} // Ensure unique key by combining code and name
+                          value={country.code}
+                          className=" items-center"
+                        >
+                          <img
+                            src={country.flag}
+                            alt={country.name}
+                            className="w-6 h-4 mr-2"
+                            loading="lazy"
+                          />
+                          <span>
+                            {country.name} ({country.code})
+                          </span>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              </div>
+
+              {/* Phone Number Input */}
+              <div className="relative flex-grow">
                 <Input
-                  key={index}
                   type="text"
-                  value={digit}
-                  maxLength={1}
-                  onChange={(e) => handleOtpChange(e.target.value, index)}
-                  onKeyDown={(e) => handleKeyDown(e, index)}
-                  ref={(el) => (otpRefs.current[index] = el || null)} // Corrected ref callback
-                  className="text-center w-16 h-12"
+                  placeholder="Enter phone number"
+                  value={phoneNumber}
+                  onChange={handlePhoneNumberChange}
+                  className=" h-12 text-xl bg-white"
                 />
-              ))}
+              </div>
             </div>
-            {/* OTP Error */}
-            {errors.otp && (
-              <p className="text-red-600 text-sm mt-2">{errors.otp}</p>
+            {/* Phone Number Error */}
+            {errors.phoneNumber && (
+              <p className="text-red-600 text-sm mt-2">{errors.phoneNumber}</p>
             )}
           </div>
-        )}
 
-        {/* Button */}
+          {/* OTP Input Field */}
+          {otpRequested && (
+            <div className="mb-6">
+              <Label className="text-lg text-gray-500">Enter OTP</Label>
+              <div className="flex space-x-2 mt-2  items-end">
+                {otp.map((digit, index) => (
+                  <Input
+                    key={index}
+                    type="text"
+                    value={digit}
+                    maxLength={1}
+                    onChange={(e) => handleOtpChange(e.target.value, index)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                    ref={(el) => (otpRefs.current[index] = el || null)} // Corrected ref callback
+                    className="text-center w-14 h-12  bg-white"
+                  />
+                ))}
+                <p className="text-[#6e4a99] underline">Resend OTP</p>
+              </div>
 
-        <div className="flex justify-center">
-          <button
-            onClick={handleSubmit}
-            className="rounded-full text-xl flex mx-auto mt-8 px-6 py-2 font-bold text-white"
-            style={{ backgroundColor: "#6e4a99" }}
-          >
-            {otpRequested ? "Submit" : "Request For OTP"}
-          </button>
-        </div>
-      </CardContent>
-    </Card>
+              {/* OTP Error */}
+              {errors.otp && (
+                <p className="text-red-600 text-sm mt-2">{errors.otp}</p>
+              )}
+            </div>
+          )}
+
+          {/* Button */}
+
+          <div className="flex justify-center">
+            <button
+              onClick={handleSubmit}
+              className="rounded-full text-xl flex mx-auto mt-8 px-6 py-2 font-bold text-white"
+              style={{ backgroundColor: "#6e4a99" }}
+            >
+              {otpRequested ? "Submit" : "Request For OTP"}
+            </button>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 };
 

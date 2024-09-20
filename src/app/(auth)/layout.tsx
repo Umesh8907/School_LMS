@@ -7,17 +7,21 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="md:flex md:h-screen w-full">
       {/* Left Side - Static */}
-      
+
       <div className="md:w-1/2 bg-gradient-to-tr from-[#f0c8d8] to-white ">
-      <Image src={logo} alt="logo" width={100} height={100}  className=" ml-16 mt-10"/>
+        <Image
+          src={logo}
+          alt="logo"
+          width={100}
+          height={100}
+          className=" ml-16 mt-10"
+        />
         <div className="">
-    
-          <div className=" border-[2px] border-[#bea7d6] bg-white md:w-[85%] md:p-10 p-4 rounded-lg items-center relative mx-auto mt-8 md:mt-8  h-[450px]    ">
-         
+          <div className=" border-[1.5px] border-gray-300 bg-[#faf9ff] md:w-[85%] md:p-10 p-4 rounded-lg items-center relative mx-auto mt-8 md:mt-8     ">
             <Image
               src={school_girl}
               alt=""
-              className="absolute bottom-0 right-0 lg:w-[360px] sm:w-[300px] "
+              className="absolute bottom-0 right-0 lg:w-[360px]  sm:w-[270px] "
             />
             <div className="pr-56">
               <h1 className="text-[18px] md:text-[22px] lg:text-[28px] xl:text-[32px] text-black font-bold   sm:text-start mt-4 md:mt-5  ">
@@ -27,7 +31,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
               <p className="md:text-[16px] text-sm md:mt-4 mt-4">
                 A Multi-Session Wellness Program for Adolescent Girls
               </p>
-              <div className="  rounded-xl flex flex-col md:gap-4 gap-2 w-full mt-16 ">
+              <div className="  rounded-xl flex flex-col md:mt-14  w-full ">
                 <p>
                   <strong>Designed By:</strong> Panel of Experts
                 </p>
@@ -60,12 +64,13 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
                 </div>
               </div>
             </div>
-            
           </div>
         </div>
       </div>
       {/* Main content */}
-      <div className="md:w-1/2 flex justify-center items-center">{children}</div>
+      <div className="md:w-1/2 flex justify-center items-center">
+        {children}
+      </div>
     </div>
   );
 };

@@ -15,6 +15,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FaSpinner } from "react-icons/fa6";
 import Link from "next/link";
+import { motion } from "framer-motion"; // Import framer-motion
+
 
 // Helper function to calculate age based on DOB
 const calculateAge = (dob: string) => {
@@ -91,6 +93,7 @@ const Register_Ui: React.FC = () => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [showPopover, setShowPopover] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [animateOut, setAnimateOut] = useState(false); // Control for upward animation on submit
 
   const router = useRouter(); // Next.js router for navigation
 
@@ -175,7 +178,8 @@ const Register_Ui: React.FC = () => {
         if (response.data.isSuccess) {
           setErrors({});
           setLoading(false);
-          setShowPopover(true);
+          // Trigger upward animation before navigating
+          setAnimateOut(true);
 
           // Store registration data in localStorage
           localStorage.setItem(
@@ -210,182 +214,205 @@ const Register_Ui: React.FC = () => {
       setLoading(false);
     }
   };
-
+  // Motion variants for entrance and exit animations
+  const cardVariants = {
+    hidden: { opacity: 0, y: "100%" },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", duration: 0.75 },
+    },
+    exit: { opacity: 0, y: "-100%", transition: { duration: 0.5 } },
+  };
   return (
-    <Card className="w-[60%] mx-auto mt-10 p-6 bg-[#faf9ff]">
-      <CardContent>
-        <h1 className="lg:text-[22px] underline font-semibold">
-          Profile Details
-        </h1>
-        <p className="mt-4 text-[18px]">
-          Complete your profile to get course access
-        </p>
-        <div className="mt-4 flex flex-col gap-6">
-          <Input
-            type="text"
-            placeholder="Full Name"
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-              handleFieldChange("name", e.target.value);
-            }}
-            className="w-full bg-white"
-          />
-          {errors.name && <p className="text-red-600 text-sm">{errors.name}</p>}
+    <motion.div
+      initial="hidden"
+      animate={animateOut ? "exit" : "visible"}
+      variants={cardVariants}
+      className="w-[65%] mx-auto  "
+    >
+      <Card className="bg-[#faf9ff] py-6 px-8">
+        <CardContent>
+          <h1 className="lg:text-[22px] md:text-[24px] underline font-semibold">
+            Profile Details
+          </h1>
+          <p className="mt-4 text-[18px]">
+            Complete your profile to get course access
+          </p>
+          <div className="mt-4 flex flex-col gap-6">
+            <Input
+              type="text"
+              placeholder="Full Name"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+                handleFieldChange("name", e.target.value);
+              }}
+              className="w-full bg-white h-10"
+            />
+            {errors.name && (
+              <p className="text-red-600 text-sm">{errors.name}</p>
+            )}
 
-          <Input
-            type="text"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              handleFieldChange("email", e.target.value);
-            }}
-            className="w-full bg-white"
-          />
-          {errors.email && (
-            <p className="text-red-600 text-sm">{errors.email}</p>
-          )}
+            <Input
+              type="text"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                handleFieldChange("email", e.target.value);
+              }}
+              className="w-full bg-white h-10"
+            />
+            {errors.email && (
+              <p className="text-red-600 text-sm">{errors.email}</p>
+            )}
 
-<label className="text-sm font-semibold text-gray-500">Date of Birth</label>
-          <div className="flex gap-4">
-          
+            <div>
+              <label className="text-sm font-semibold text-gray-500 ">
+                Date of Birth
+              </label>
+              <div className="flex gap-4 mt-2">
+                <Select
+                  onValueChange={(value) => {
+                    setDay(value);
+                    handleFieldChange("dob", value);
+                  }}
+                  defaultValue={day}
+                >
+                  <SelectTrigger className="w-full bg-white h-10">
+                    <SelectValue placeholder="Day" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {days.map((d) => (
+                      <SelectItem key={d} value={`${d}`}>
+                        {d}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Select
+                  onValueChange={(value) => {
+                    setMonth(value);
+                    handleFieldChange("dob", value);
+                  }}
+                  defaultValue={month}
+                >
+                  <SelectTrigger className="w-full bg-white h-10">
+                    <SelectValue placeholder="Month" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {months.map((m) => (
+                      <SelectItem key={m} value={`${m}`}>
+                        {m}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Select
+                  onValueChange={(value) => {
+                    setYear(value);
+                    handleFieldChange("dob", value);
+                  }}
+                  defaultValue={year}
+                >
+                  <SelectTrigger className="w-full bg-white h-10">
+                    <SelectValue placeholder="Year" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {years.map((y) => (
+                      <SelectItem key={y} value={`${y}`}>
+                        {y}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            {errors.dob && <p className="text-red-600 text-sm">{errors.dob}</p>}
+
             <Select
               onValueChange={(value) => {
-                setDay(value);
-                handleFieldChange("dob", value);
+                setGrade(value);
+                handleFieldChange("grade", value);
               }}
-              defaultValue={day}
+              defaultValue={grade}
             >
-              <SelectTrigger className="w-full bg-white">
-                <SelectValue placeholder="Day" />
+              <SelectTrigger className="w-full bg-white h-10">
+                <SelectValue placeholder="Select Grade" />
               </SelectTrigger>
               <SelectContent>
-                {days.map((d) => (
-                  <SelectItem key={d} value={`${d}`}>
-                    {d}
-                  </SelectItem>
-                ))}
+                <SelectItem value="6">Grade 6</SelectItem>
+                <SelectItem value="7">Grade 7</SelectItem>
+                <SelectItem value="8">Grade 8</SelectItem>
+                <SelectItem value="9">Grade 9</SelectItem>
+                <SelectItem value="10">Grade 10</SelectItem>
               </SelectContent>
             </Select>
+            {errors.grade && (
+              <p className="text-red-600 text-sm">{errors.grade}</p>
+            )}
 
-            <Select
-              onValueChange={(value) => {
-                setMonth(value);
-                handleFieldChange("dob", value);
+            <Input
+              type="text"
+              placeholder="School/Institution"
+              value={school}
+              onChange={(e) => {
+                setSchool(e.target.value);
+                handleFieldChange("school", e.target.value);
               }}
-              defaultValue={month}
-            >
-              <SelectTrigger className="w-full bg-white">
-                <SelectValue placeholder="Month" />
-              </SelectTrigger>
-              <SelectContent>
-                {months.map((m) => (
-                  <SelectItem key={m} value={`${m}`}>
-                    {m}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              className="w-full bg-white h-10"
+            />
+            {errors.school && (
+              <p className="text-red-600 text-sm">{errors.school}</p>
+            )}
 
-            <Select
-              onValueChange={(value) => {
-                setYear(value);
-                handleFieldChange("dob", value);
+            <Input
+              type="text"
+              placeholder="Parent/Guardian Contact Number"
+              value={contact}
+              onChange={(e) => {
+                setContact(e.target.value);
+                handleFieldChange("contact", e.target.value);
               }}
-              defaultValue={year}
-            >
-              <SelectTrigger className="w-full bg-white">
-                <SelectValue placeholder="Year" />
-              </SelectTrigger>
-              <SelectContent>
-                {years.map((y) => (
-                  <SelectItem key={y} value={`${y}`}>
-                    {y}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              className="w-full bg-white h-10"
+            />
+            {errors.contact && (
+              <p className="text-red-600 text-sm">{errors.contact}</p>
+            )}
+
+            {errors.general && (
+              <p className="text-red-600 text-sm">{errors.general}</p>
+            )}
           </div>
-          {errors.dob && <p className="text-red-600 text-sm">{errors.dob}</p>}
 
-          <Select
-            onValueChange={(value) => {
-              setGrade(value);
-              handleFieldChange("grade", value);
-            }}
-            defaultValue={grade}
+          <Button
+            onClick={handleSubmit}
+            disabled={loading}
+            className="rounded-full text-xl flex mx-auto mt-8 px-14 py-6 font-bold"
+            style={{ backgroundColor: "#6e4a99" }}
           >
-            <SelectTrigger className="w-full bg-white">
-              <SelectValue placeholder="Select Grade" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="6">Grade 6</SelectItem>
-              <SelectItem value="7">Grade 7</SelectItem>
-              <SelectItem value="8">Grade 8</SelectItem>
-              <SelectItem value="9">Grade 9</SelectItem>
-              <SelectItem value="10">Grade 10</SelectItem>
-            </SelectContent>
-          </Select>
-          {errors.grade && (
-            <p className="text-red-600 text-sm">{errors.grade}</p>
-          )}
-
-          <Input
-            type="text"
-            placeholder="School/Institution"
-            value={school}
-            onChange={(e) => {
-              setSchool(e.target.value);
-              handleFieldChange("school", e.target.value);
-            }}
-            className="w-full bg-white"
-          />
-          {errors.school && (
-            <p className="text-red-600 text-sm">{errors.school}</p>
-          )}
-
-          <Input
-            type="text"
-            placeholder="Parent/Guardian Contact Number"
-            value={contact}
-            onChange={(e) => {
-              setContact(e.target.value);
-              handleFieldChange("contact", e.target.value);
-            }}
-            className="w-full bg-white"
-          />
-          {errors.contact && (
-            <p className="text-red-600 text-sm">{errors.contact}</p>
-          )}
-
-          {errors.general && (
-            <p className="text-red-600 text-sm">{errors.general}</p>
-          )}
-        </div>
-
-        <Button
-          onClick={handleSubmit}
-          disabled={loading}
-          className="rounded-full text-xl flex mx-auto mt-8 px-14 py-6 font-bold"
-          style={{ backgroundColor: "#6e4a99" }}
-        >
-          {loading ? <FaSpinner className="animate-spin" /> : "Submit"}
-        </Button>
-        <p className="text-sm text-left text-gray-500 mt-4">By submitting the profile details, I agree to the <Link href="https://infano.care/policy/#agreement" target="_blank" rel="noopener noreferrer"><span className="underline">Terms & Conditions</span></Link> and <Link href="https://infano.care/policy/#want"><span className="underline">Privacy Policy</span></Link></p>
-
-        {showPopover && (
-          <Popover open={true}>
-            <PopoverTrigger>
-              <div></div>
-            </PopoverTrigger>
-            <PopoverContent>
-              Profile updated! You will be redirected shortly.
-            </PopoverContent>
-          </Popover>
-        )}
-      </CardContent>
-    </Card>
+            {loading ? <FaSpinner className="animate-spin" /> : "Submit"}
+          </Button>
+          <p className="text-sm text-left text-gray-500 mt-4">
+            By submitting the profile details, I agree to the{" "}
+            <Link
+              href="https://infano.care/policy/#agreement"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="underline">Terms & Conditions</span>
+            </Link>{" "}
+            and{" "}
+            <Link href="https://infano.care/policy/#want">
+              <span className="underline">Privacy Policy</span>
+            </Link>
+          </p>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 };
 
