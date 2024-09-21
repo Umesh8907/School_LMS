@@ -180,7 +180,7 @@ const PhoneNumberInput: React.FC = () => {
   };
   const otpVariants = {
     hidden: { opacity: 0, y: "-50%" }, // Start slightly above
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }, // Slide down smoothly
+    visible: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" } }, // Slide down smoothly
     exit: { opacity: 0, y: "-50%", transition: { duration: 0.5 } }, // Exit upwards smoothly
   };
 
