@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "../../assets/Infano Logo.png";
@@ -27,10 +28,13 @@ const navigation = [
 const bottomNavigation = [
   { name: "Talk to us", href: "/talk-to-us", icon: FaPhone },
   { name: "Profile", href: "/profile", icon: FaUser },
-  { name: "Logout", href: "/logout", icon: FaSignOutAlt },
 ];
 
-export default function Sidebar() {
+interface SidebarProps {
+  onLogoutClick: () => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ onLogoutClick }) => {
   const pathname = usePathname();
 
   return (
@@ -50,7 +54,7 @@ export default function Sidebar() {
           />
         </div>
 
-        {/* Top Navigation with gap */}
+        {/* Top Navigation */}
         <nav className="mt-10 flex flex-col gap-4">
           {navigation.map((item) => (
             <Link key={item.name} href={item.href}>
@@ -70,7 +74,7 @@ export default function Sidebar() {
         </nav>
       </div>
 
-      {/* Bottom Navigation with gap */}
+      {/* Bottom Navigation */}
       <div className="mb-4 flex flex-col gap-4">
         {bottomNavigation.map((item) => (
           <Link key={item.name} href={item.href}>
@@ -87,7 +91,18 @@ export default function Sidebar() {
             </div>
           </Link>
         ))}
+
+        {/* Logout Button */}
+        <div
+          onClick={onLogoutClick} // Call the logout handler passed from parent
+          className="flex items-center justify-center md:justify-start px-4 py-2 font-medium rounded-lg w-full transition-colors cursor-pointer hover:bg-[#ed99bb] text-gray-600"
+        >
+          <FaSignOutAlt className="text-[24px] md:text-[20px] mr-0 md:mr-2" />
+          <span className="hidden md:inline">Logout</span>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default Sidebar;

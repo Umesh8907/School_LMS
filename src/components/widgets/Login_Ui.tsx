@@ -178,6 +178,11 @@ const PhoneNumberInput: React.FC = () => {
       }, 400); // Match the duration of the exit animation (0.4s)
     }
   };
+  const otpVariants = {
+    hidden: { opacity: 0, y: "-50%" }, // Start slightly above
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }, // Slide down smoothly
+    exit: { opacity: 0, y: "-50%", transition: { duration: 0.5 } }, // Exit upwards smoothly
+  };
 
   return (
     <motion.div
@@ -185,7 +190,7 @@ const PhoneNumberInput: React.FC = () => {
       animate={isExiting ? "exit" : "visible"} // Animate exit when isExiting is true
       exit="exit" // Animate out (upwards) when unmounting
       variants={cardVariants}
-      className="w-[65%] mx-auto  "
+      className="md:w-[65%] lg:w-[50%] w-full mx-auto  "
     >
       <Card className="p-4 bg-[#faf9ff]">
         <CardHeader>
@@ -268,7 +273,14 @@ const PhoneNumberInput: React.FC = () => {
 
           {/* OTP Input Field */}
           {otpRequested && (
-            <div className="mb-6">
+           <motion.div
+           initial="hidden" // Start hidden (above screen)
+              animate="visible" // Animate in when OTP is requested
+              exit="exit" // Animate out when component unmounts
+              variants={otpVariants} // Apply defined motion variants
+              className=""
+           >
+             <div className="mb-6">
               <Label className="text-lg text-gray-500">Enter OTP</Label>
               <div className="flex space-x-2 mt-2  items-end">
                 {otp.map((digit, index) => (
@@ -280,7 +292,7 @@ const PhoneNumberInput: React.FC = () => {
                     onChange={(e) => handleOtpChange(e.target.value, index)}
                     onKeyDown={(e) => handleKeyDown(e, index)}
                     ref={(el) => (otpRefs.current[index] = el || null)} // Corrected ref callback
-                    className="text-center w-14 h-12  bg-white"
+                    className="text-center w-14 h-12  bg-white text-lg"
                   />
                 ))}
                 <p className="text-[#6e4a99] underline">Resend OTP</p>
@@ -291,6 +303,7 @@ const PhoneNumberInput: React.FC = () => {
                 <p className="text-red-600 text-sm mt-2">{errors.otp}</p>
               )}
             </div>
+           </motion.div>
           )}
 
           {/* Button */}

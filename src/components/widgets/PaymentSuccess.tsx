@@ -33,7 +33,7 @@ const PaymentSuccess = () => {
       initial="hidden"
       animate="visible"
       variants={cardVariants}
-      className="w-[65%] mx-auto"
+      className="md:w-[65%] lg:w-[50%] mx-auto"
     >
       <Card className="p-8 bg-[#faf9ff] flex flex-col justify-center items-center">
         <Image

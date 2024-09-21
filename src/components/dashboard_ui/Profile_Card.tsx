@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { GrScorecard } from "react-icons/gr";
-import profilePlaceholder from '../../assets/profile.jpg'; // Fallback image
+import profilePlaceholder from '../../assets/hero.svg'; // Fallback image
+
 
 const Profile_Card = () => {
   const [userData, setUserData] = useState({
@@ -46,7 +47,7 @@ const Profile_Card = () => {
         </div>
         <div className="right flex flex-col justify-center items-center gap-4 md:mt-0 mt-4">
           <Image
-            src={userData.profileImage}
+            src={userData.profileImage || profilePlaceholder}
             alt="Profile"
             className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-full border-4 border-[#b955aa]"
           />

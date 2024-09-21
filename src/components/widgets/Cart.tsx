@@ -158,7 +158,7 @@ const Cart = () => {
       initial="hidden"
       animate={animateOut ? "exit" : "visible"}
       variants={cardVariants}
-      className="w-[65%] mx-auto p-4 bg-[#faf9ff]"
+      className="md:w-[65%] lg:w-[50%] mx-auto"
     >
       <Card className=" p-4 bg-[#faf9ff]">
         {courseData ? (

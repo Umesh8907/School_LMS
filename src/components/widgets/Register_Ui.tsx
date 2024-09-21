@@ -229,7 +229,7 @@ const Register_Ui: React.FC = () => {
       initial="hidden"
       animate={animateOut ? "exit" : "visible"}
       variants={cardVariants}
-      className="w-[65%] mx-auto  "
+      className="md:w-[65%] lg:w-[50%] mx-auto  "
     >
       <Card className="bg-[#faf9ff] py-6 px-8">
         <CardContent>
