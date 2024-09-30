@@ -262,14 +262,14 @@ const Register_Ui: React.FC = () => {
                 setEmail(e.target.value);
                 handleFieldChange("email", e.target.value);
               }}
-              className="w-full bg-white h-10 mt-[10px]"
+              className="w-full bg-white h-10 mt-[10px] sm:mt-[20px]"
             />
             {errors.email && (
               <p className="text-red-600 text-sm">{errors.email}</p>
             )}
 
             <div>
-              <p className="text-sm font-semibold text-gray-500  mt-[10px] ">
+              <p className="text-sm font-semibold text-gray-500  mt-[10px] sm:mt-[20px] ">
                 Date of Birth
               </p>
               <div className="flex gap-4 mt-2">
@@ -340,7 +340,7 @@ const Register_Ui: React.FC = () => {
               }}
               defaultValue={grade}
             >
-              <SelectTrigger className="w-full bg-white h-10 mt-[10px]">
+              <SelectTrigger className="w-full bg-white h-10 mt-[10px] sm:mt-[20px]">
                 <SelectValue placeholder="Select Grade" />
               </SelectTrigger>
               <SelectContent>
@@ -363,7 +363,7 @@ const Register_Ui: React.FC = () => {
                 setSchool(e.target.value);
                 handleFieldChange("school", e.target.value);
               }}
-              className="w-full bg-white h-10 mt-[10px]"
+              className="w-full bg-white h-10 mt-[10px] sm:mt-[20px]"
             />
             {errors.school && (
               <p className="text-red-600 text-sm">{errors.school}</p>
@@ -377,7 +377,7 @@ const Register_Ui: React.FC = () => {
                 setContact(e.target.value);
                 handleFieldChange("contact", e.target.value);
               }}
-              className="w-full bg-white h-10 mt-[10px]"
+              className="w-full bg-white h-10 mt-[10px] sm:mt-[20px]"
             />
             {errors.contact && (
               <p className="text-red-600 text-sm">{errors.contact}</p>

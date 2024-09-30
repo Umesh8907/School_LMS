@@ -1,0 +1,470 @@
+{
+    "payload": [
+        {
+            "id": "66eede6cbe23c640f28ceef8",
+            "name": "Girlhood: HerNext Foundation",
+            "description": "Girlhood: HerNext Foundation empowers young girls with essential knowledge about menstruation, hygiene, puberty, nutrition, and well-being. Build confidence through understanding menstrual health and safety for a brighter, healthier future",
+            "thumbnail": "",
+            "thumbnailUniqueName": null,
+            "category": "Learners",
+            "allowedGrades": [
+                6,
+                7,
+                8
+            ],
+            "isFreeCourse": false,
+            "price": 1000,
+            "discount": 50,
+            "discountedPrice": 499,
+            "duration": 630,
+            "prerequisites": null,
+            "prerequisiteIds": null,
+            "isActive": true,
+            "modules": [
+                {
+                    "id": "66eede6cbe23c640f28ceef9",
+                    "name": "Menstrual Hygiene",
+                    "description": "",
+                    "thumbnail": null,
+                    "thumbnailUniqueName": null,
+                    "sqOrder": 1,
+                    "duration": 120,
+                    "chapters": [
+                        {
+                            "id": "66eede6cbe23c640f28ceefe",
+                            "name": "The Menstrual Cycle",
+                            "content": "What and Why menstruation",
+                            "sqOrder": 1,
+                            "duration": 30,
+                            "resources": [
+                                {
+                                    "fileType": "link",
+                                    "filePath": "https://www.youtube.com/watch?v=sMJnWkIEZ7U"
+                                }
+                            ],
+                            "thumbnail": "",
+                            "thumbnailUniqueName": null,
+                            "keyPoints": [
+                                "Understanding the Purpose of Menstruation: Students will grasp why menstruation occurs and its role in reproductive health.",
+                                "Knowledge of Menstrual Phases: Clear insight into the four phases (follicular, ovulatory, luteal, and menstrual) and how they function in the body",
+                                "Awareness of Hormonal Changes: Awareness of how hormones fluctuate during the cycle and their effects on both physical and emotional health",
+                                "Recognition of Cycle Variations: Understanding that menstrual cycle lengths can vary and recognizing what is considered normal",
+                                "Empowerment Through Cycle Tracking: Ability to track menstrual cycles for better health monitoring and self-awareness"
+                            ],
+                            "suggestions": [
+                                "Understand Your Body: Pay attention to the changes in your body during different phases of the menstrual cycle. Knowledge empowers you to take control of your health",
+                                "Track Your Cycle: Start tracking your menstrual cycle to recognize patterns, irregularities, or any unusual symptoms. This helps in early detection of potential health concerns",
+                                "Stay Informed About Hormonal Health: Hormones play a major role in your mood and physical well-being. Being aware of their impact can help you manage both emotional and physical changes effectively",
+                                "Maintain Menstrual Hygiene: Always follow proper menstrual hygiene practices, such as changing pads or tampons regularly, to prevent infections and discomfort",
+                                "Don't Be Afraid to Ask for Help: If you experience severe pain, irregular cycles, or other concerning symptoms, consult a healthcare professional. It’s important to seek advice early on"
+                            ],
+                            "faQs": [
+                                {
+                                    "question": "How can I track my menstrual cycle accurately?",
+                                    "answer": "Using apps, calendars, or even simple journaling to log cycle dates, symptoms, and flow helps in accurately tracking and understanding patterns in your cycle"
+                                },
+                                {
+                                    "question": "What should I do if I notice irregularities in my menstrual cycle?",
+                                    "answer": "If your cycle is irregular (frequent skips, heavy bleeding, or prolonged periods), consult a gynecologist to evaluate possible underlying health issues like hormonal imbalances"
+                                },
+                                {
+                                    "question": "How does hormonal contraception affect my menstrual cycle?",
+                                    "answer": "Hormonal contraceptives can regulate or alter the natural menstrual cycle. It's important to discuss with your gynecologist to understand how they might affect your periods"
+                                },
+                                {
+                                    "question": "Are there any lifestyle changes that can impact the menstrual cycle?",
+                                    "answer": "Yes, factors like stress, extreme diet changes, and intense physical activity can alter your cycle. Discussing these with a gynecologist can help manage your cycle better"
+                                },
+                                {
+                                    "question": "When should I consider consulting a gynecologist about menstrual pain?",
+                                    "answer": "While mild cramps are normal, severe or debilitating pain could be a sign of conditions like endometriosis or fibroids. It's advisable to consult a gynecologist if pain interferes with daily activities"
+                                }
+                            ],
+                            "expertId": "66eede6cbe23c640f28cef00",
+                            "completionCriteria": "",
+                            "prerequisites": null,
+                            "isActive": true
+                        },
+                        {
+                            "id": "66eede6cbe23c640f28ceeff",
+                            "name": "Menstruation and Puberty",
+                            "content": "Menstruation and Puberty: explores the onset of menstruation, physical changes during puberty, and how to manage them confidently",
+                            "sqOrder": 2,
+                            "duration": 30,
+                            "resources": [
+                                {
+                                    "fileType": "link",
+                                    "filePath": "https://www.youtube.com/watch?v=hQ0sBqep4F0"
+                                }
+                            ],
+                            "thumbnail": "",
+                            "thumbnailUniqueName": null,
+                            "keyPoints": [
+                                "Understanding Menarche: Learn about the onset of menstruation (menarche) and how to recognize the signs",
+                                "Physical Changes: Gain insight into the key physical changes during puberty, including breast development and body hair growth",
+                                "Emotional and Mood Swings: Understand emotional changes and mood swings common during puberty and menstruation",
+                                "Irregular Periods: Know that irregular periods are common in early menstruation and what to expect during this phase",
+                                "Vaginal Discharge: Learn about vaginal discharge, its purpose, and when it may signal a concern"
+                            ],
+                            "suggestions": [
+                                "Embrace Your Body’s Changes: Puberty is a natural process, and it's important to accept the physical changes like breast development and body hair as a part of growing up",
+                                "Track Your Menstrual Cycle: Begin tracking your periods to better understand your cycle. Irregularities are normal at first, but tracking helps you recognize patterns",
+                                "Focus on Self-Care: Pay attention to hygiene and comfort during menstruation. Use proper menstrual products and change them regularly to maintain cleanliness",
+                                "Communicate Your Feelings: Mood swings and emotional changes are common during puberty. Don’t hesitate to talk to someone you trust if you feel overwhelmed",
+                                "Know When to Seek Help: If you experience severe pain, extremely irregular periods, or unusual vaginal discharge, seek guidance from a healthcare professional. Early awareness can prevent future issues"
+                            ],
+                            "faQs": [
+                                {
+                                    "question": "What is the normal age range for the onset of menstruation (menarche), and when should I be concerned if it hasn’t started?",
+                                    "answer": "The typical age range for menarche is between 9 and 16. If menstruation hasn't begun by age 16, it may be worth consulting a healthcare professional"
+                                },
+                                {
+                                    "question": "Why are periods irregular during the first few years of menstruation, and when does the cycle usually stabilize?",
+                                    "answer": "It's common to have irregular periods during the early stages of menstruation due to hormonal fluctuations. Cycles typically stabilize after 2-3 years"
+                                },
+                                {
+                                    "question": "What physical changes during puberty should I expect, and how can I manage discomfort like breast tenderness or body odor?",
+                                    "answer": "Breast development, body hair growth, and skin changes are normal. Wearing comfortable bras, practicing good hygiene, and using deodorants can help manage discomfort"
+                                },
+                                {
+                                    "question": "How can I differentiate between normal vaginal discharge and discharge that requires medical attention?",
+                                    "answer": "Normal discharge is usually clear or white and odorless. If it has a strong smell, unusual color, or is accompanied by itching or discomfort, consult a doctor"
+                                },
+                                {
+                                    "question": "What should I do if I experience extreme mood swings or emotional distress during puberty?",
+                                    "answer": "Mood swings are common due to hormonal changes. However, if emotional distress feels overwhelming, it’s important to talk to a trusted adult or seek professional support"
+                                }
+                            ],
+                            "expertId": "",
+                            "completionCriteria": "",
+                            "prerequisites": null,
+                            "isActive": false
+                        },
+                        {
+                            "id": "66eede6cbe23c640f28ceeff",
+                            "name": "Menstrual Flow and Menstrual Irregularities",
+                            "content": "The Menstrual Flow and Menstrual Irregularities chapter explains normal flow, common irregularities, and when to seek medical advice",
+                            "sqOrder": 2,
+                            "duration": 30,
+                            "resources": [
+                                {
+                                    "fileType": "link",
+                                    "filePath": "https://www.youtube.com/watch?v=zcvo9VLVHWc"
+                                }
+                            ],
+                            "thumbnail": "",
+                            "thumbnailUniqueName": null,
+                            "keyPoints": [
+                                "Understanding Menstrual Flow: Learn about light, moderate, and heavy flow patterns and what is considered normal",
+                                "Causes of Irregular Periods: Discover common causes such as stress, weight changes, hormonal imbalances, and lifestyle factors",
+                                "When to Seek Medical Help: Recognize when irregularities may require consulting a doctor, especially with prolonged or painful periods",
+                                "Impact on Health: Understand how menstrual irregularities can indicate underlying health issues like PCOS, thyroid disorders, or anemia",
+                                "Tracking Your Cycle: Learn the importance of tracking menstrual patterns to detect any irregularities early"
+                            ],
+                            "suggestions": [
+                                "Track Your Menstrual Cycle Regularly: Keep a record of the start and end dates of your periods, flow intensity, and any unusual symptoms. This helps detect irregularities early",
+                                "Pay Attention to Changes: Any sudden or significant changes in your menstrual flow, duration, or frequency should not be ignored. Early intervention can prevent complications",
+                                "Manage Stress and Lifestyle: Stress, lack of sleep, and poor diet can disrupt hormonal balance, leading to irregular periods. Focus on healthy habits to maintain a regular cycle",
+                                "Consult a Doctor if Periods Are Painful or Prolonged: Severe pain, very heavy flow, or periods lasting more than a week might indicate underlying health issues like PCOS or fibroids. Seek medical advice early",
+                                "Understand Treatment Options: Be aware that irregular periods can be treated with lifestyle changes, hormonal therapy, or other medical interventions. Early consultation with a gynecologist ensures proper diagnosis and treatment"
+                            ],
+                            "faQs": [
+                                {
+                                    "question": "What are the normal variations in menstrual flow, and when should I be concerned about heavy or light periods?",
+                                    "answer": "Normal variations in flow can differ among individuals. However, consistently very heavy or very light periods should be monitored and discussed with a gynecologist to rule out underlying conditions"
+                                },
+                                {
+                                    "question": "How does stress, diet, or weight changes impact the regularity of menstrual cycles?",
+                                    "answer": "Stress, significant weight fluctuations, and poor diet can all influence hormonal balance, leading to irregular periods. Understanding these connections is crucial for maintaining a regular menstrual cycle"
+                                },
+                                {
+                                    "question": "What treatment options are available for menstrual irregularities, and how are they chosen?",
+                                    "answer": "Treatments can range from lifestyle changes, hormonal therapy, to medications or surgery, depending on the cause. A gynecologist would conduct tests and recommend the most suitable treatment based on individual diagnosis"
+                                },
+                                {
+                                    "question": "When should I consult a gynecologist if I experience irregular periods?",
+                                    "answer": "It’s important to consult a doctor if you have consistently missed periods, experience extreme pain, or notice a drastic change in your flow or cycle length. Early medical intervention helps diagnose and treat any potential conditions"
+                                },
+                                {
+                                    "question": "What are the potential underlying causes of irregular periods, and how can they be diagnosed?",
+                                    "answer": "Irregular periods can be caused by conditions like PCOS, thyroid issues, or fibroids. A gynecologist may use tests such as blood work, ultrasounds, or hormone evaluations to diagnose the cause and determine the treatment plan."
+                                }
+                            ],
+                            "expertId": "",
+                            "completionCriteria": "",
+                            "prerequisites": null,
+                            "isActive": false
+                        },
+                        {
+                            "id": "66eede6cbe23c640f28ceeff",
+                            "name": "Understanding Menstruation: Myths and Facts",
+                            "content": "Understanding Menstruation: Myths and Facts explores common misconceptions about menstruation, providing accurate information to debunk myths and promote awareness",
+                            "sqOrder": 2,
+                            "duration": 30,
+                            "resources": [
+                                {
+                                    "fileType": "link",
+                                    "filePath": "https://www.youtube.com/watch?v=JPNzKQ152EQ"
+                                }
+                            ],
+                            "thumbnail": "",
+                            "thumbnailUniqueName": null,
+                            "keyPoints": [
+                                "Debunking Myths: Understanding that menstruation is a natural bodily function, not a sign of impurity or weakness",
+                                "Scientific Clarity: Gaining factual knowledge about the menstrual cycle, clearing up common misconceptions about menstrual blood",
+                                "Breaking Taboos: Recognizing cultural taboos and how to challenge them by promoting open, healthy conversations",
+                                "Empowerment: Encouraging girls to embrace their bodies confidently and reject societal stigmas attached to menstruation",
+                                "Informed Choices: Learning how scientific understanding can lead to better menstrual hygiene and overall well-being"
+                            ],
+                            "suggestions": [
+                                "Educate Yourself: Take the time to understand the biological and scientific aspects of menstruation to dispel myths and build accurate knowledge",
+                                "Challenge Taboos: Feel empowered to question and challenge cultural taboos and myths surrounding menstruation. Open dialogue can lead to greater awareness and acceptance",
+                                "Seek Accurate Information: Always refer to credible sources or consult healthcare professionals for accurate information regarding menstrual health, rather than relying on hearsay",
+                                "Promote Open Conversations: Engage in open and respectful discussions with peers, family, and educators about menstruation to normalize the topic and reduce stigma",
+                                "Practice Self-Care: Apply your knowledge to practice good menstrual hygiene and self-care. Understanding the facts will help you make informed decisions about your health and well-being"
+                            ],
+                            "faQs": [
+                                {
+                                    "question": "How do I access additional resources or references related to this chapter?",
+                                    "answer": "Additional resources and references are available through the course materials section on the LMS. If you need specific resources, contact the course administrator or consult the recommended reading list"
+                                },
+                                {
+                                    "question": "What should I do if I encounter technical issues while accessing the chapter?",
+                                    "answer": "If you face technical difficulties, please report the issue through the LMS support section. Provide details about the problem, and our technical team will assist you promptly"
+                                },
+                                {
+                                    "question": "How can I provide feedback or suggest improvements for this chapter?",
+                                    "answer": "Feedback can be submitted through the feedback form available at the end of the chapter or directly through the LMS’s feedback section. Your suggestions help us enhance the content and delivery"
+                                },
+                                {
+                                    "question": "What are the credentials of the experts who created this chapter?",
+                                    "answer": "The chapter was developed by certified gynecologists and healthcare professionals with extensive experience in menstrual health. Their credentials are listed in the course overview section for transparency"
+                                },
+                                {
+                                    "question": "How can I contact a gynecologist if I have personal questions or concerns about menstruation?",
+                                    "answer": "For personalized queries, you can schedule a consultation through the LMS's Ask a Specialist feature or contact our support team for guidance on arranging an appointment with a gynecologist"
+                                }
+                            ],
+                            "expertId": "",
+                            "completionCriteria": "",
+                            "prerequisites": null,
+                            "isActive": false
+                        }
+                    ],
+                    "assessments": [
+                        {
+                            "id": "66eede6dbe23c640f28cef06",
+                            "name": "Period Proficiency Assessment",
+                            "assessmentType": "Quiz",
+                            "gradingScheme": "",
+                            "maxMarks": 100,
+                            "totalQuestions": 10,
+                            "mustTake": true,
+                            "duration": 10,
+                            "maxAttempts": 2,
+                            "isActive": true,
+                            "gradeCriteria": [
+                                {
+                                    "gradeName": "A",
+                                    "minMarks": 90,
+                                    "maxMarks": 100
+                                },
+                                {
+                                    "gradeName": "B",
+                                    "minMarks": 60,
+                                    "maxMarks": 79
+                                },
+                                {
+                                    "gradeName": "C",
+                                    "minMarks": 40,
+                                    "maxMarks": 59
+                                },
+                                {
+                                    "gradeName": "D",
+                                    "minMarks": 0,
+                                    "maxMarks": 39
+                                }
+                            ],
+                            "assessmentQuestions": [
+                                {
+                                    "id": "66eede6dbe23c640f28cef02",
+                                    "question": "What is the most effective way to maintain menstrual hygiene?",
+                                    "questionType": "MultipleChoice",
+                                    "marks": 100,
+                                    "options": [
+                                        {
+                                            "optionId": "A",
+                                            "option": "Change sanitary products once a day.",
+                                            "isCorrect": false
+                                        },
+                                        {
+                                            "optionId": "B",
+                                            "option": "Change sanitary products every 4-6 hours.",
+                                            "isCorrect": false
+                                        },
+                                        {
+                                            "optionId": "C",
+                                            "option": "Rinse with water only.",
+                                            "isCorrect": true
+                                        }
+                                    ],
+                                    "feedback": "",
+                                    "isActive": true
+                                },
+                                {
+                                    "id": "66eede6dbe23c640f28cef03",
+                                    "question": "What is the most effective way to maintain menstrual hygiene?2",
+                                    "questionType": "MultipleChoice",
+                                    "marks": 100,
+                                    "options": [
+                                        {
+                                            "optionId": "A",
+                                            "option": "Change sanitary products once a day.",
+                                            "isCorrect": false
+                                        },
+                                        {
+                                            "optionId": "B",
+                                            "option": "Change sanitary products every 4-6 hours.",
+                                            "isCorrect": false
+                                        },
+                                        {
+                                            "optionId": "C",
+                                            "option": "Rinse with water only.",
+                                            "isCorrect": true
+                                        }
+                                    ],
+                                    "feedback": "",
+                                    "isActive": true
+                                },
+                                {
+                                    "id": "66eede6dbe23c640f28cef04",
+                                    "question": "What is the most effective way to maintain menstrual hygiene?3",
+                                    "questionType": "MultipleChoice",
+                                    "marks": 100,
+                                    "options": [
+                                        {
+                                            "optionId": "A",
+                                            "option": "Change sanitary products once a day.",
+                                            "isCorrect": false
+                                        },
+                                        {
+                                            "optionId": "B",
+                                            "option": "Change sanitary products every 4-6 hours.",
+                                            "isCorrect": false
+                                        },
+                                        {
+                                            "optionId": "C",
+                                            "option": "Rinse with water only.",
+                                            "isCorrect": true
+                                        }
+                                    ],
+                                    "feedback": "",
+                                    "isActive": true
+                                },
+                                {
+                                    "id": "66eede6dbe23c640f28cef05",
+                                    "question": "What is the most effective way to maintain menstrual hygiene?4",
+                                    "questionType": "MultipleChoice",
+                                    "marks": 100,
+                                    "options": [
+                                        {
+                                            "optionId": "A",
+                                            "option": "Change sanitary products once a day.",
+                                            "isCorrect": false
+                                        },
+                                        {
+                                            "optionId": "B",
+                                            "option": "Change sanitary products every 4-6 hours.",
+                                            "isCorrect": false
+                                        },
+                                        {
+                                            "optionId": "C",
+                                            "option": "Rinse with water only.",
+                                            "isCorrect": true
+                                        }
+                                    ],
+                                    "feedback": "",
+                                    "isActive": true
+                                }
+                            ],
+                            "feedback": ""
+                        }
+                    ],
+                    "resources": [
+                        {
+                            "fileType": "link",
+                            "filePath": "https://www.youtube.com/watch?v=sMJnWkIEZ7U"
+                        }
+                    ],
+                    "isActive": false
+                },
+                {
+                    "id": "66eede6cbe23c640f28ceefa",
+                    "name": "Managing Menstrual Discomfort",
+                    "description": "Managing Menstrual Discomfort provides practical tips and remedies to alleviate cramps, bloating, and other menstrual symptoms effectively and comfortably",
+                    "thumbnail": null,
+                    "thumbnailUniqueName": null,
+                    "sqOrder": 2,
+                    "duration": 120,
+                    "chapters": null,
+                    "assessments": null,
+                    "resources": [
+                        {
+                            "fileType": "link",
+                            "filePath": "https://www.youtube.com/watch?v=sMJnWkIEZ7U"
+                        }
+                    ],
+                    "isActive": false
+                }
+            ],
+            "certificate": "",
+            "isApproved": true,
+            "approvedOn": "0001-01-01T00:00:00Z"
+        },
+        {
+            "id": "66f3565b2250fd9d448e3ad9",
+            "name": "Growing Knowledge: InspireHer",
+            "description": "Course designed to empower young girls with confidence, resilience, and essential life skills",
+            "thumbnail": "string",
+            "thumbnailUniqueName": "string",
+            "category": "Explorers",
+            "allowedGrades": [
+                9,
+                10
+            ],
+            "isFreeCourse": false,
+            "price": 1499,
+            "discount": 50,
+            "discountedPrice": 799,
+            "duration": 630,
+            "prerequisites": null,
+            "prerequisiteIds": [
+                "66eede6cbe23c640f28ceef8"
+            ],
+            "isActive": true,
+            "modules": [
+                {
+                    "id": "66f35ad82250fd9d448e3ada",
+                    "name": "Advanced Menstruation and Puberty",
+                    "description": "Explores in-depth changes, challenges, and self-care strategies during adolescence for empowered growth",
+                    "thumbnail": "string",
+                    "thumbnailUniqueName": "string",
+                    "sqOrder": 1,
+                    "duration": 120,
+                    "chapters": null,
+                    "assessments": null,
+                    "resources": null,
+                    "isActive": true
+                }
+            ],
+            "certificate": "string",
+            "isApproved": false,
+            "approvedOn": "0001-01-01T00:00:00Z"
+        }
+    ],
+    "recordCount": 0,
+    "messages": null,
+    "statusCode": 200,
+    "isSuccess": true,
+    "isSuccessfulOrNotFound": true
+}
