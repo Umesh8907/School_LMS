@@ -12,9 +12,16 @@ import {
 import { Input } from "../ui/input";
 import { motion } from "framer-motion"; // Import framer-motion
 import { useRouter } from "next/navigation"; // Import useRouter for redirect
+import { useDispatch } from "react-redux"; // Import useDispatch for Redux
+import { setTokens } from "../../redux/features/authSlice"; // Import your Redux actions
 
 // API endpoint to fetch country data
 const COUNTRIES_API = "https://restcountries.com/v3.1/all";
+
+// API endpoints for OTP
+const BASE_URL = "https://infanoapi.pocapi.in/api"; // Set your base URL
+const SEND_OTP_URL = `${BASE_URL}/Auth/sendotp?mobile_number_with_prefix=`;
+const VERIFY_OTP_URL = `${BASE_URL}/Auth/verifyotp?mobile_number_with_prefix=`;
 
 // Define the Country type
 interface Country {
@@ -41,18 +48,18 @@ const PhoneNumberInput: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [countryCode, setCountryCode] = useState("+91"); // Default country code for India
   const [countries, setCountries] = useState<Country[]>([]); // State for storing country data
-  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [isLoading, setIsLoading] = useState(false); // Loading state for API calls
   const [otpRequested, setOtpRequested] = useState(false);
   const [otp, setOtp] = useState(["", "", "", ""]);
-
   const [errors, setErrors] = useState({
     phoneNumber: "",
     otp: "",
+    api: "", // For handling API errors
   });
-
   const [isExiting, setIsExiting] = useState(false); // New state to trigger card exit animation
 
   const router = useRouter(); // Initialize the Next.js router
+  const dispatch = useDispatch(); // Initialize Redux dispatch
 
   // Motion variants for entrance and exit animations
   const cardVariants = {
@@ -151,36 +158,68 @@ const PhoneNumberInput: React.FC = () => {
     return "";
   };
 
+  // Function to send OTP
+  const sendOtp = async () => {
+    setIsLoading(true); // Start loading
+    try {
+      const response = await fetch(SEND_OTP_URL + countryCode + phoneNumber);
+      if (!response.ok) throw new Error("Failed to send OTP");
+      setOtpRequested(true);
+      setErrors((prevErrors) => ({ ...prevErrors, api: "" })); // Clear API error
+    } catch (error) {
+      setErrors((prevErrors) => ({ ...prevErrors, api: error.message }));
+    } finally {
+      setIsLoading(false); // End loading
+    }
+  };
+
+  // Function to verify OTP
+  const verifyOtp = async () => {
+    setIsLoading(true); // Start loading
+    try {
+      const otpCode = otp.join(""); // Combine OTP digits into one string
+      const response = await fetch(
+        VERIFY_OTP_URL + countryCode + phoneNumber + "&otp=" + otpCode
+      );
+      if (!response.ok) throw new Error("Invalid OTP");
+      const { accessToken, refreshToken } = await response.json(); // Assuming API returns tokens in the response
+      dispatch(setTokens({ accessToken, refreshToken })); // Store tokens in Redux
+      setIsExiting(true); // Start exit animation
+
+      // Redirect after animation
+      setTimeout(() => {
+        router.push("/register");
+      }, 400); // Match the duration of the exit animation (0.4s)
+    } catch (error) {
+      setErrors((prevErrors) => ({ ...prevErrors, api: error.message }));
+    } finally {
+      setIsLoading(false); // End loading
+    }
+  };
+
   const handleSubmit = () => {
     const phoneError = validatePhoneNumber();
     setErrors((prevErrors) => ({ ...prevErrors, phoneNumber: phoneError }));
 
     if (!otpRequested) {
       if (phoneError) return; // Prevent submitting if there's an error
-      // Request OTP logic
-      setOtpRequested(true);
+      sendOtp(); // Request OTP
     } else {
       const otpError = validateOtp();
       setErrors((prevErrors) => ({ ...prevErrors, otp: otpError }));
 
       if (phoneError || otpError) return; // Prevent submitting if there are errors
-
-      // Submit OTP logic
-      const otpCode = otp.join(""); // Combine OTP digits into one string
-      console.log("Submitting OTP:", otpCode);
-
-      // Start exit animation
-      setIsExiting(true);
-
-      // Redirect to /register after animation
-      setTimeout(() => {
-        router.push("/register");
-      }, 400); // Match the duration of the exit animation (0.4s)
+      verifyOtp(); // Submit OTP
     }
   };
+
   const otpVariants = {
     hidden: { opacity: 0, y: "-50%" }, // Start slightly above
-    visible: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" } }, // Slide down smoothly
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.2, ease: "easeOut" },
+    }, // Slide down smoothly
     exit: { opacity: 0, y: "-50%", transition: { duration: 0.5 } }, // Exit upwards smoothly
   };
 
@@ -269,6 +308,10 @@ const PhoneNumberInput: React.FC = () => {
             {errors.phoneNumber && (
               <p className="text-red-600 text-sm mt-2">{errors.phoneNumber}</p>
             )}
+            {/* API Error */}
+            {errors.api && (
+              <p className="text-red-600 text-sm mt-2">{errors.api}</p>
+            )}
           </div>
 
           {/* OTP Input Field */}
@@ -307,14 +350,18 @@ const PhoneNumberInput: React.FC = () => {
           )}
 
           {/* Button */}
-
           <div className="flex justify-center">
             <button
               onClick={handleSubmit}
               className="rounded-full text-xl flex mx-auto mt-8 px-6 py-2 font-bold text-white"
               style={{ backgroundColor: "#6e4a99" }}
+              disabled={isLoading} // Disable button while loading
             >
-              {otpRequested ? "Submit" : "Request For OTP"}
+              {isLoading
+                ? "Loading..."
+                : otpRequested
+                ? "Submit"
+                : "Request For OTP"}
             </button>
           </div>
         </CardContent>
