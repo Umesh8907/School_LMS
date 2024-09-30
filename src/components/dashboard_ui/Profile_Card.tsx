@@ -34,7 +34,7 @@ const Profile_Card = () => {
     <div className="md:px-20 sm:py-8 p-4 bg-[#f4f2ff] rounded-lg ring-1 ring-gray-300 relative shadow-[5px_5px_0px_0px_rgba(245,229,235)]">
       <div className="md:flex justify-between">
         <div className="left">
-          <p>Hi {userData.name} Welcome to your wellness care</p>
+          <p className="text-center sm:text-left">Hi {userData.name} Welcome to your wellness care</p>
           <h1 className="font-bold md:text-[24px] mt-4 text-[18px] text-center md:text-left">
             {userData.quote}
           </h1>

@@ -8,7 +8,7 @@ const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
-    <div className="p-4 flex justify-between items-center mt-8 mb-4">
+    <div className="p-4 sm:flex justify-between items-center mt-8 mb-4 hidden ">
       <h1 className="text-xl font-bold">Dashboard</h1>
      <div className="flex justify-end gap-8 items-center">
      <div className="relative w-[300px]">

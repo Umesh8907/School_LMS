@@ -1,8 +1,11 @@
+
+import PaymentSuccess from "@/components/widgets/PaymentSuccess";
+
 import Image from "next/image";
 import school_girl from "@/assets/school_girl.png";
 import logo from "@/assets/Infano Logo.png";
 import React from "react";
-import layer from "../../assets/Vector 16.png"
+import layer from "../../assets/Vector 16.png";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -10,16 +13,13 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       {/* Left Side - Static */}
 
       <div className="md:w-1/2 w-full  sm:bg-gradient-to-tr from-[#f0c8d8] to-white relative">
-
         <Image
           src={layer}
           alt=""
-          
           className="h-screen object-contain absolute -right-[25px] hidden sm:block "
         />
 
- 
-        <div className="w-full   mx-auto">
+        <div className="w-full   mx-auto hidden sm:block">
           <Image
             src={logo}
             alt="logo"
@@ -80,9 +80,8 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </div>
       {/* Main content */}
-      <div className="md:w-1/2 flex justify-center items-center mt-6 sm:mt-0">
-      
-        {children}
+      <div className="md:w-1/2 flex justify-center items-center h-screen">
+     <PaymentSuccess/>
       </div>
     </div>
   );

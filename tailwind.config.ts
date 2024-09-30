@@ -20,7 +20,7 @@ const config: Config = {
     },
     extend: {
       screens: {
-        sm: "800px",
+        sm: "600px",
         md: "1400px",
         lg: "1600px",
         xl: "1800px", // Custom breakpoint for screens ≥ 1600px

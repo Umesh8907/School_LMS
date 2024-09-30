@@ -9,7 +9,7 @@ import React from "react";
 
 const page = () => {
   return (
-    <div className="md:w-[96%] w-[95%] mx-auto mb-20 ">
+    <div className="md:w-[96%] w-[92%] mx-auto mb-20 mt-6">
       
       <Navbar/>
 

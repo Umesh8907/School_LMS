@@ -15,11 +15,11 @@ const ProgressLayout = () => {
         </div>
 
         {/* Assessment Progress and Course Module */}
-        <div className="flex flex-col md:gap-6 w-full md:w-[30%]">
-          <div className="w-full h-full">
+        <div className="flex md:flex-col md:gap-6 gap-2  md:w-[30%] w-full mb-4">
+          <div className="md:w-full w-1/2 ">
             <Assesment_Progress />
           </div>
-          <div className="w-full h-full">
+          <div className="md:w-full w-1/2 ">
             <Course_Module />
           </div>
         </div>

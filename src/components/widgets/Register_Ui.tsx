@@ -229,17 +229,17 @@ const Register_Ui: React.FC = () => {
       initial="hidden"
       animate={animateOut ? "exit" : "visible"}
       variants={cardVariants}
-      className="md:w-[65%] lg:w-[50%] mx-auto  "
+      className="md:w-[65%] lg:w-[60%]  w-full mx-auto  "
     >
-      <Card className="bg-[#faf9ff] py-6 px-8">
+      <Card className="bg-[#faf9ff]  md:px-8 py-6">
         <CardContent>
-          <h1 className="lg:text-[22px] md:text-[24px] underline font-semibold">
+          <h1 className="lg:text-[22px] md:text-[24px] text-lg underline font-semibold mb-4">
             Profile Details
           </h1>
           <p className="mt-4 text-[18px]">
             Complete your profile to get course access
           </p>
-          <div className="mt-4 flex flex-col gap-6">
+          <div className="mt-4 flex flex-col">
             <Input
               type="text"
               placeholder="Full Name"
@@ -248,7 +248,7 @@ const Register_Ui: React.FC = () => {
                 setName(e.target.value);
                 handleFieldChange("name", e.target.value);
               }}
-              className="w-full bg-white h-10"
+              className="w-full bg-white h-10 mt-[10px]"
             />
             {errors.name && (
               <p className="text-red-600 text-sm">{errors.name}</p>
@@ -262,16 +262,16 @@ const Register_Ui: React.FC = () => {
                 setEmail(e.target.value);
                 handleFieldChange("email", e.target.value);
               }}
-              className="w-full bg-white h-10"
+              className="w-full bg-white h-10 mt-[10px]"
             />
             {errors.email && (
               <p className="text-red-600 text-sm">{errors.email}</p>
             )}
 
             <div>
-              <label className="text-sm font-semibold text-gray-500 ">
+              <p className="text-sm font-semibold text-gray-500  mt-[10px] ">
                 Date of Birth
-              </label>
+              </p>
               <div className="flex gap-4 mt-2">
                 <Select
                   onValueChange={(value) => {
@@ -340,7 +340,7 @@ const Register_Ui: React.FC = () => {
               }}
               defaultValue={grade}
             >
-              <SelectTrigger className="w-full bg-white h-10">
+              <SelectTrigger className="w-full bg-white h-10 mt-[10px]">
                 <SelectValue placeholder="Select Grade" />
               </SelectTrigger>
               <SelectContent>
@@ -363,7 +363,7 @@ const Register_Ui: React.FC = () => {
                 setSchool(e.target.value);
                 handleFieldChange("school", e.target.value);
               }}
-              className="w-full bg-white h-10"
+              className="w-full bg-white h-10 mt-[10px]"
             />
             {errors.school && (
               <p className="text-red-600 text-sm">{errors.school}</p>
@@ -377,7 +377,7 @@ const Register_Ui: React.FC = () => {
                 setContact(e.target.value);
                 handleFieldChange("contact", e.target.value);
               }}
-              className="w-full bg-white h-10"
+              className="w-full bg-white h-10 mt-[10px]"
             />
             {errors.contact && (
               <p className="text-red-600 text-sm">{errors.contact}</p>

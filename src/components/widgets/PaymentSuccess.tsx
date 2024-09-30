@@ -13,7 +13,7 @@ const PaymentSuccess = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push("/dashboard");
-    }, 3000); // Redirect after 3 seconds
+    }, 3000); 
 
     return () => clearTimeout(timer); // Cleanup timer on component unmount
   }, [router]);
@@ -33,9 +33,9 @@ const PaymentSuccess = () => {
       initial="hidden"
       animate="visible"
       variants={cardVariants}
-      className="md:w-[65%] lg:w-[50%] mx-auto"
+      className="md:w-[65%] lg:w-[60%]  w-full mx-auto  "
     >
-      <Card className="p-8 bg-[#faf9ff] flex flex-col justify-center items-center">
+      <Card className="sm:p-8 bg-[#faf9ff] flex flex-col justify-center items-center p-2">
         <Image
           src={thankyou}
           alt="Payment Success Icon"
@@ -54,7 +54,7 @@ const PaymentSuccess = () => {
           height={100}
           className="mt-8"
         />
-        <p className="text-sm mb-10">
+        <p className="text-sm mb-10 text-center sm:text-left">
           We're getting your personalized profile ready just for you!
         </p>
       </Card>

@@ -15,9 +15,9 @@ const WhatsAppChat: React.FC = () => {
       href={whatsappLink}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 flex items-center justify-center md:w-auto md:h-auto w-10 h-10 bg-[#25D366] hover:bg-[#1d8f47] rounded-full shadow-lg hover:shadow-xl duration-200 px-4 py-2 transition-all"
+      className="fixed bottom-6 right-6 z-50 flex items-center justify-center md:w-auto md:h-auto w-160 h-w-160 bg-[#25D366] hover:bg-[#1d8f47] rounded-full shadow-lg hover:shadow-xl duration-200 px-4 py-2 transition-all"
     >
-      <FaWhatsapp className="text-white text-3xl md:mr-2" />
+      <FaWhatsapp className="text-white sm:text-3xl text-3xl  md:mr-2" />
       <p className="hidden md:block text-white text-sm font-semibold">
         Chat with Us
       </p>

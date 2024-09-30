@@ -9,7 +9,7 @@ const page = () => {
         <div>
         <Image src={community} alt='community'  className='w-[300px] object-fill '/>
         </div>
-        <h1 className='text-[28px] font-bold'>Comming Soom!</h1>
+        <h1 className='text-[28px] font-bold'>Comming Soon!</h1>
         <p className='text-center text-lg mt-6'>We're hard at work building exciting new features to enhance your experience. Stay tuned for updates!</p>
         <p className='mt-6 bg-[#6e4a99] text-white font-semibold  px-8 py-2 rounded-full  '>Thanks for being a part of our community</p>
       </div>

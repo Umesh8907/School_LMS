@@ -158,28 +158,30 @@ const Cart = () => {
       initial="hidden"
       animate={animateOut ? "exit" : "visible"}
       variants={cardVariants}
-      className="md:w-[65%] lg:w-[50%] mx-auto"
+      className="md:w-[65%] lg:w-[60%]  w-full mx-auto "
     >
-      <Card className=" p-4 bg-[#faf9ff]">
+      <Card className="sm:p-4 p-2 bg-[#faf9ff] ">
         {courseData ? (
           <Card>
-            <div className="p-6">
+            <div className="sm:p-6 p-4 ">
               <div className="header flex gap-6 justify-around">
                 <Image
                   src={`https://infanoapi.pocapi.in/api/Image/Download?folder=images&fileName=No_Image_Available.jpg&uniqueFileName=${courseData.thumbnailUniqueName}`}
                   alt={courseData.thumbnail}
-                  width={200}
+                  width={100}
                   height={100}
-                  className="object-cover rounded-lg w-[140px] h-[120px]"
+                  className="object-cover rounded-lg sm:w-[140px] sm:h-[120px] w-[100px] h-[100px] "
                 />
                 <div>
-                  <h1 className="text-[22px] font-bold">Girlhood: HerNext</h1>
+                  <h1 className="sm:text-[22px] font-bold">
+                    Girlhood: HerNext
+                  </h1>
                   <p className="text-sm mt-2 line-clamp-4">
                     {courseData.description}
                   </p>
                 </div>
               </div>
-              <div className="flex mt-8 justify-between">
+              <div className="sm:flex flex-col mt-8 justify-between">
                 <p>
                   <strong>Duration:</strong>{" "}
                   {formatDuration(courseData.duration)}

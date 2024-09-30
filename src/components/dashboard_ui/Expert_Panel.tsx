@@ -30,7 +30,7 @@ const Experts = [
 
 const Expert_Panel = () => {
   return (
-    <div className=" md:w-[28%] rounded-xl flex flex-col gap-4 md:mt-0 mt-4  ">
+    <div className=" md:w-[28%] rounded-xl sm:flex flex-col gap-4 md:mt-0 mt-4 hidden ">
       <h1 className="text-center md:text-left">
         <strong>Experts -</strong> designed the course
       </h1>
