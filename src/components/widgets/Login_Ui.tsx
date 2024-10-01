@@ -12,8 +12,6 @@ import {
 import { Input } from "../ui/input";
 import { motion } from "framer-motion"; // Import framer-motion
 import { useRouter } from "next/navigation"; // Import useRouter for redirect
-import { useDispatch } from "react-redux"; // Import useDispatch for Redux
-import { setTokens } from "../../redux/features/authSlice"; // Import your Redux actions
 
 // API endpoint to fetch country data
 const COUNTRIES_API = "https://restcountries.com/v3.1/all";
@@ -59,7 +57,6 @@ const PhoneNumberInput: React.FC = () => {
   const [isExiting, setIsExiting] = useState(false); // New state to trigger card exit animation
 
   const router = useRouter(); // Initialize the Next.js router
-  const dispatch = useDispatch(); // Initialize Redux dispatch
 
   // Motion variants for entrance and exit animations
   const cardVariants = {
@@ -160,16 +157,26 @@ const PhoneNumberInput: React.FC = () => {
 
   // Function to send OTP
   const sendOtp = async () => {
-    setIsLoading(true); // Start loading
+    setIsLoading(true);
     try {
+      console.log("Sending OTP to:", countryCode + phoneNumber);
       const response = await fetch(SEND_OTP_URL + countryCode + phoneNumber);
-      if (!response.ok) throw new Error("Failed to send OTP");
-      setOtpRequested(true);
-      setErrors((prevErrors) => ({ ...prevErrors, api: "" })); // Clear API error
+      const data = await response.json();
+
+      console.log("Response data:", data); // Log the entire response
+
+      if (data.payload?.status === "Success") {
+        console.log("OTP sent successfully:", data.payload.details);
+        setOtpRequested(true);
+        setErrors((prevErrors) => ({ ...prevErrors, api: "" })); // Clear API error
+      } else {
+        throw new Error(data.payload?.message || "Failed to send OTP");
+      }
     } catch (error) {
+      console.error("Error sending OTP:", error);
       setErrors((prevErrors) => ({ ...prevErrors, api: error.message }));
     } finally {
-      setIsLoading(false); // End loading
+      setIsLoading(false);
     }
   };
 
@@ -178,19 +185,28 @@ const PhoneNumberInput: React.FC = () => {
     setIsLoading(true); // Start loading
     try {
       const otpCode = otp.join(""); // Combine OTP digits into one string
+      console.log("Verifying OTP:", otpCode);
       const response = await fetch(
         VERIFY_OTP_URL + countryCode + phoneNumber + "&otp=" + otpCode
       );
-      if (!response.ok) throw new Error("Invalid OTP");
-      const { accessToken, refreshToken } = await response.json(); // Assuming API returns tokens in the response
-      dispatch(setTokens({ accessToken, refreshToken })); // Store tokens in Redux
-      setIsExiting(true); // Start exit animation
+      const data = await response.json();
 
-      // Redirect after animation
-      setTimeout(() => {
-        router.push("/register");
-      }, 400); // Match the duration of the exit animation (0.4s)
+      if (data.isSuccess) {
+        console.log("OTP verified successfully. Tokens:", data.payload);
+        // Store tokens in cookies
+        document.cookie = `accessToken=${data.payload.access_token}; path=/`;
+        document.cookie = `refreshToken=${data.payload.refresh_token}; path=/`;
+        setIsExiting(true); // Start exit animation
+
+        // Redirect after animation
+        setTimeout(() => {
+          router.push("/register");
+        }, 400); // Match the duration of the exit animation (0.4s)
+      } else {
+        throw new Error("Invalid OTP");
+      }
     } catch (error) {
+      console.error("Error verifying OTP:", error);
       setErrors((prevErrors) => ({ ...prevErrors, api: error.message }));
     } finally {
       setIsLoading(false); // End loading

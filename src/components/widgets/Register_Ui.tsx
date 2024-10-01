@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { FaSpinner } from "react-icons/fa6";
 import Link from "next/link";
 import { motion } from "framer-motion"; // Import framer-motion
+import Cookies from 'js-cookie'; // Import js-cookie for accessing cookies
 
 
 // Helper function to calculate age based on DOB
@@ -124,47 +125,70 @@ const Register_Ui: React.FC = () => {
     (_, i) => new Date().getFullYear() - i
   );
 
-  const handleSubmit = async () => {
-    setLoading(true); // Show loading spinner while processing the request
+const handleSubmit = async () => {
+  setLoading(true); // Show loading spinner while processing the request
 
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const monthIndex = monthNames.indexOf(month);
-    const formattedMonth = (monthIndex + 1).toString().padStart(2, "0");
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const monthIndex = monthNames.indexOf(month);
+  const formattedMonth = (monthIndex + 1).toString().padStart(2, "0");
+  const formattedDay = day.padStart(2, "0");
+  const dob = `${year}-${formattedMonth}-${formattedDay}`;
 
-    const formattedDay = day.padStart(2, "0");
-    const dob = `${year}-${formattedMonth}-${formattedDay}`;
+  const validationErrors = validateProfile({
+    name,
+    email,
+    dob,
+    grade,
+    school,
+    contact,
+  });
 
-    const validationErrors = validateProfile({
-      name,
-      email,
-      dob,
-      grade,
-      school,
-      contact,
-    });
+  setErrors({});
 
-    setErrors({});
+  if (Object.keys(validationErrors).length === 0) {
+    try {
+      // Get access token from cookies
+      const accessToken = Cookies.get("accessToken");
+      if (!accessToken) {
+        setErrors({ general: "Access token not found. Please login again." });
+        setLoading(false);
+        return;
+      }
 
-    if (Object.keys(validationErrors).length === 0) {
-      try {
+      // Fetch user ID using the /user/GetCurrent API
+      const userResponse = await axios.get(
+        `https://infanoapi.pocapi.in/api/user/GetCurrent`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`, // Pass the token in the request header
+          },
+        }
+      );
+
+      // Check if the response is successful and payload exists
+      if (userResponse.data?.isSuccess && userResponse.data.payload?.id) {
+        const userId = userResponse.data.payload.id; // Extract userId from payload
+
+        // Now use the userId for the registration request
         const requestData = {
-          userId: "66ea8f4cd2586ff84ffb523f", // Hard-coded userId
+          userId, // Use the fetched userId
           name,
           email,
           dateOfBirth: dob,
+          phone: "9202368646",
           grade: parseInt(grade),
           institution: school,
           parentContact: contact,
@@ -172,14 +196,18 @@ const Register_Ui: React.FC = () => {
 
         const response = await axios.post(
           "https://infanoapi.pocapi.in/api/Student/Create",
-          requestData
+          requestData,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`, // Pass the token in the request header
+            },
+          }
         );
 
         if (response.data.isSuccess) {
           setErrors({});
           setLoading(false);
-          // Trigger upward animation before navigating
-          setAnimateOut(true);
+          setAnimateOut(true); // Trigger upward animation
 
           // Store registration data in localStorage
           localStorage.setItem(
@@ -195,25 +223,30 @@ const Register_Ui: React.FC = () => {
           setErrors({ general: backendErrorString });
           setLoading(false);
         }
-      } catch (error) {
+      } else {
+        setErrors({ general: "Failed to fetch user ID." });
         setLoading(false);
-
-        if (axios.isAxiosError(error)) {
-          const responseError = error.response?.data || {};
-          const errorMessage =
-            responseError.messages?.join(", ") ||
-            responseError.message ||
-            "An error occurred.";
-          setErrors({ general: errorMessage });
-        } else {
-          setErrors({ general: "An unexpected error occurred." });
-        }
       }
-    } else {
-      setErrors(validationErrors);
+    } catch (error) {
       setLoading(false);
+
+      if (axios.isAxiosError(error)) {
+        const responseError = error.response?.data || {};
+        const errorMessage =
+          responseError.messages?.join(", ") ||
+          responseError.message ||
+          "An error occurred.";
+        setErrors({ general: errorMessage });
+      } else {
+        setErrors({ general: "An unexpected error occurred." });
+      }
     }
-  };
+  } else {
+    setErrors(validationErrors);
+    setLoading(false);
+  }
+};
+
   // Motion variants for entrance and exit animations
   const cardVariants = {
     hidden: { opacity: 0, y: "100%" },
